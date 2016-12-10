@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 // tässä on nyt importoitu paljon kaikkea paskaa...
 
 public class Kirjautuminen extends JFrame{
@@ -31,19 +32,23 @@ public class Kirjautuminen extends JFrame{
     
     //layout null, sammutus rastista, näkyvyys, koko jne
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setVisible(true);
     this.setSize(500,300);
     kirjautuminen.setLayout(null);
-    sailio.setVisible(true);
+   
+    // Sisäänkirjautumisen actionlistener
     
-    /*login.addActionListener(new ActionListener(){
-     * public void actionPerformed(ActionEvent e){
-     * }
-     * };
-     */
+    login.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+      login.setBackground(Color.RED);
+     }
+      }
+                           );
+    // Jos käyttäjällä ei ole kirjautumisruudussa tunnuksia, hän voi
+    // siirtyä rekisteröitymisnäkymään
+     
     rek.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){ 
-        cl.show(sailio, "rek");
+        cl.show(sailio, "reks");
       }
     }
                           );
@@ -56,15 +61,17 @@ public class Kirjautuminen extends JFrame{
     lapass.setBounds(10,30,120,20);
     
     add(sailio);
-    add(login);
-    add(sailio);
-    add(rek);
-    add(user);
-    add(pass);
-    add(lauser);
-    add(lapass);
+    kirjautuminen.add(login);
+    kirjautuminen.add(rek);
+    kirjautuminen.add(user);
+    kirjautuminen.add(pass);
+    kirjautuminen.add(lauser);
+    kirjautuminen.add(lapass);
     sailio.add(kirjautuminen, "kirj");
-    sailio.add(rekisteroituminen, "rek");
+    sailio.add(rekisteroituminen, "reks");
+    
+     sailio.setVisible(true);
+     setVisible(true);
     }
   
   public static void main(String args[]){

@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 // tässä on nyt importoitu paljon kaikkea paskaa...
-
 public class Rekisteroituminen extends JPanel{
   
   // buttonit
@@ -32,32 +31,33 @@ public class Rekisteroituminen extends JPanel{
    
     setLayout(null);
     error.setVisible(false);
-    
+    setVisible(false);
+    error.setForeground (Color.red);
     //  actionlistener
     in.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e) {
         if(String.valueOf(pfpass1.getPassword()).equals(String.valueOf(pfpass2.getPassword()))){
-          if(String.valueOf(pfpass1.getPassword()) != ""){
+          // pitäis vissii kans tarkistaa ettei eka oo tyhjä
              in.setBackground(Color.RED);
         }else{
           error.setVisible(true);
-        }
+        
            }
 }
     }
 );
                
     // sijoitukset
-    in.setBounds(140,110,200,20);
-    tfname.setBounds(140,10,200,20);
-    tfnickname.setBounds(140,30,200,20);
-    pfpass1.setBounds(140,50,200,20);
-    pfpass2.setBounds(140,80,200,20);
+    in.setBounds(160,130,200,20);
+    tfname.setBounds(160,10,200,20);
+    tfnickname.setBounds(160,40,200,20);
+    pfpass1.setBounds(160,70,200,20);
+    pfpass2.setBounds(160,100,200,20);
     name.setBounds(10,10,120,20);
-    nickname.setBounds(10,30,120,20);
-    pass1.setBounds(10,50,120,20);
-    pass2.setBounds(10,80,120,20);
-    error.setBounds (140,130,200,20);
+    nickname.setBounds(10,40,120,20);
+    pass1.setBounds(10,70,120,20);
+    pass2.setBounds(10,100,120,20);
+    error.setBounds (160,160,300,20);
     
     add(in);
     add(tfname);

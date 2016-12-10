@@ -20,3 +20,4 @@ local.properties
 ## JAVA
 ###########################
 *.class
+src/domain/EclipseCompiler.txt

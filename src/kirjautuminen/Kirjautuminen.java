@@ -14,6 +14,7 @@ public class Kirjautuminen extends JFrame{
   private JPanel sailio;
   private JPanel kirjautuminen;
   private Rekisteroituminen rekisteroituminen;
+  private Peli peli;
   
   public Kirjautuminen(){
     // painikkeet
@@ -31,15 +32,24 @@ public class Kirjautuminen extends JFrame{
     rekisteroituminen = new Rekisteroituminen();
     
     //layout null, sammutus rastista, n‰kyvyys, koko jne
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   // this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize(500,300);
     kirjautuminen.setLayout(null);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    
     // Sis‰‰nkirjautumisen actionlistener
     
     login.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
-      login.setBackground(Color.RED);
+      // t‰ss‰ pit‰is tarkistaa tietokannasta t‰sm‰‰kˆ salasana ja k‰ytt‰j‰nimi
+      // "tyhjennet‰‰n" kirjoitetut kent‰t
+      // user.setText("");
+      // pass.setText("");
+       
+          peli = new Peli();
+          peli.setLayout(null);
+          sailio.add(peli, "peli");
+          cl.show(sailio, "peli");
      }
       }
                            );

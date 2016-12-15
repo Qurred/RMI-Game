@@ -4,73 +4,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 // tässä on nyt importoitu paljon kaikkea paskaa...
+
 public class Rekisteroituminen extends JPanel{
   
   // buttonit
-  private JButton in;
+  private JButton rekisteroidy;
   // labelit
-  private JLabel name, nickname, pass1, pass2, error;
+  private JLabel nimi, nimimerkki, salasana1, salasana2, virhe;
   // kentät
-  private JTextField tfname, tfnickname;
-  private JPasswordField pfpass1, pfpass2;
+  private JTextField nimikentta, nimimekentta;
+  private JPasswordField salakentta1, salakentta2;
   
   public Rekisteroituminen(){
     
     // Buttonit
-    in = new JButton("Rekisteröidy.");
+    rekisteroidy = new JButton("Rekisteröidy.");
     //labelit
-    name = new JLabel("Etu- ja sukunimi:");
-    nickname = new JLabel("Käyttäjätunnus:");
-    pass1 = new JLabel("Anna salasana:");
-    pass2 = new JLabel("Anna salasana uudelleen:");
-    error = new JLabel("Salasana puuttuu tai ne eivät täsmää");
+    nimi = new JLabel("Etu- ja sukunimi:");
+    nimimerkki = new JLabel("Käyttäjätunnus:");
+    salasana1 = new JLabel("Anna salasana:");
+    salasana2 = new JLabel("Anna salasana uudelleen:");
+    virhe = new JLabel("Salasana puuttuu tai ne eivät täsmää");
     //kentät
-    tfname = new JTextField();
-    tfnickname = new JTextField();
-    pfpass1 = new JPasswordField();
-    pfpass2 = new JPasswordField();
+    nimikentta = new JTextField();
+    nimimekentta = new JTextField();
+    salakentta1 = new JPasswordField();
+    salakentta2 = new JPasswordField();
     
    
     setLayout(null);
-    error.setVisible(false);
+    virhe.setVisible(false);
     setVisible(false);
-    error.setForeground (Color.red);
+    virhe.setForeground (Color.red);
     //  actionlistener
-    in.addActionListener(new ActionListener(){
+    rekisteroidy.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e) {
-        if(String.valueOf(pfpass1.getPassword()).equals(String.valueOf(pfpass2.getPassword()))){
+        if(String.valueOf(salakentta1.getPassword()).equals(String.valueOf(salakentta2.getPassword()))){
           // pitäis vissii kans tarkistaa ettei eka oo tyhjä
-             in.setBackground(Color.RED);
+             rekisteroidy.setBackground(Color.RED);
         }else{
-          error.setVisible(true);
+          virhe.setVisible(true);
         
            }
 }
-    }
+}
 );
                
     // sijoitukset
-    in.setBounds(160,130,200,20);
-    tfname.setBounds(160,10,200,20);
-    tfnickname.setBounds(160,40,200,20);
-    pfpass1.setBounds(160,70,200,20);
-    pfpass2.setBounds(160,100,200,20);
-    name.setBounds(10,10,120,20);
-    nickname.setBounds(10,40,120,20);
-    pass1.setBounds(10,70,120,20);
-    pass2.setBounds(10,100,120,20);
-    error.setBounds (160,160,300,20);
+    rekisteroidy.setBounds(160,130,200,20);
+    nimikentta.setBounds(160,10,200,20);
+    nimimekentta.setBounds(160,40,200,20);
+    salakentta1.setBounds(160,70,200,20);
+    salakentta2.setBounds(160,100,200,20);
+    nimi.setBounds(10,10,120,20);
+    nimimerkki.setBounds(10,40,120,20);
+    salasana1.setBounds(10,70,120,20);
+    salasana2.setBounds(10,100,120,20);
+    virhe.setBounds (160,160,300,20);
     
-    add(in);
-    add(tfname);
-    add(tfnickname);
-    add(pfpass1);
-    add(pfpass2);
-    add(name);
-    add(nickname);
-    add(pass1);
-    add(pass2);
-    add(error);
+    add(rekisteroidy);
+    add(nimikentta);
+    add(nimimekentta);
+    add(salakentta1);
+    add(salakentta2);
+    add(nimi);
+    add(nimimerkki);
+    add(salasana1);
+    add(salasana2);
+    add(virhe);
     
     }
 }

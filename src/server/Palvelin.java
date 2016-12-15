@@ -1,19 +1,21 @@
 package server;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import domain.Message;
 import domain.User;
 
-public class Palvelin implements PalvelinRajapinta, Runnable{
+public class Palvelin extends UnicastRemoteObject implements PalvelinRajapinta, Runnable{
 	
 	TietokantaHallitsija tkh;
 //	ArrayList<AsiakasRajapinta> kayttajat;
 	
-	public Palvelin(String osoite){
-		tkh = new TietokantaHallitsija(osoite);
+	public Palvelin()throws RemoteException{
+		tkh = new TietokantaHallitsija();
 //		kayttajat = new ArrayList<AsiakasRajapinta>();
+//		new Thread(this).start();
 	}
 
 	public boolean liity() throws RemoteException {

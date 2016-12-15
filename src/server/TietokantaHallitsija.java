@@ -6,19 +6,19 @@ public class TietokantaHallitsija {
 
 	private Connection yhteys = null;
 	private final char[] KIELLETYTMERKIT = {
-			
+	//Tulee sis‰lt‰m‰‰n listan kielletyist‰ merkeist‰ jotka voivat olla hyv‰ksik‰ytettyin‰ SQL-injektointia tehdess‰
 	};
 	
-	public TietokantaHallitsija(String osoite){
+	public TietokantaHallitsija(){
 		try {
 			Class.forName("org.sqlite.JDBC");
-			yhteys = DriverManager.getConnection("jdbc:sqlite:"+osoite);
+			yhteys = DriverManager.getConnection("jdbc:sqlite:database.db");
 			yhteys.setAutoCommit(false);
 		} catch (ClassNotFoundException e) {
 			System.err.println("org.sqlite.JDBC did not found");
 			return;
 		} catch (SQLException e) {
-			System.err.println("Could not found a requested database: " + osoite);
+			System.err.println("Could not found a database" );
 			return;
 		}
 	}
@@ -30,6 +30,29 @@ public class TietokantaHallitsija {
 			}
 		}
 		return true;
+	}
+	
+	public synchronized boolean kirjauduSisaan(String nimi, String salasana){
+		boolean onnistui = false;
+		
+		if(!tarkistaSyote(nimi) || !tarkistaSyote(salasana)) return onnistui;
+			
+		try {
+			Statement stmt = yhteys.createStatement();
+			String komento = "SELECT COUNT(*) FROM KAYTTAJA WHERE NIMIMERKKI = "+nimi+" AND SALANSANA = " + salasana +");"; 
+			ResultSet tulokset = stmt.executeQuery(komento);
+			tulokset.next();
+			
+			if(tulokset.getString(0).equals("1")){
+				onnistui = true;
+			}
+			yhteys.commit();
+			stmt.close();
+			return onnistui;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return onnistui;
+		}
 	}
 	
 	public synchronized void rekisteroi(String nimi, String salasana){

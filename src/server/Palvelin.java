@@ -4,9 +4,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import domain.Message;
-import domain.User;
-
 public class Palvelin extends UnicastRemoteObject implements PalvelinRajapinta, Runnable{
 	
 	TietokantaHallitsija tkh;

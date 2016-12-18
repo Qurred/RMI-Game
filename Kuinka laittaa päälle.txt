@@ -1,0 +1,6 @@
+Mene CMD:ll‰ bin kansioon kun olet compilannut kaiken (Eclipsess‰ se kiva vihre‰ nuoli)
+kirjoita "rmic server.PalvelinToteutus"
+T‰m‰ luo stubin
+Nyt kirjoita "start rmiregistry"
+
+Nyt voit menn‰ k‰ynnist‰m‰‰n palvelimen konsolista taikka eclipsest‰

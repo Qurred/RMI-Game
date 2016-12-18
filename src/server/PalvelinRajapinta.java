@@ -2,7 +2,6 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import domain.*;
 
 public interface PalvelinRajapinta extends Remote{
 	public boolean liity(/*Tänne tulee clientin tiedot jne*/) throws RemoteException;

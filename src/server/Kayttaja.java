@@ -1,9 +1,8 @@
-package domain;
+package server;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
-public class Kayttaja extends UnicastRemoteObject{
+public class Kayttaja{
 
 	public static final int IDLE = 0;
 	public static final int ETSIMASSA = 1;

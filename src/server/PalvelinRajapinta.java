@@ -8,6 +8,7 @@ public interface PalvelinRajapinta extends Remote{
 	public boolean kirjaudu(String nimi, String salasana) throws RemoteException;
 	public boolean rekisteroidu(String nimi, String salasana) throws RemoteException;
 //	public User annaKayttaja() throws RemoteException;
-	public boolean lahetaViesti(String msg) throws RemoteException;
+	public void lahetaViesti(String msg) throws RemoteException;
+	public void kirjauduUlos() throws RemoteException;
 	
 }

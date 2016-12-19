@@ -30,5 +30,8 @@ public class Kayttaja{
 	public int annaTila(){
 		return this.tila;
 	}
+	public void vastaanotaViesti(String s){
+		
+	}
 	
 }

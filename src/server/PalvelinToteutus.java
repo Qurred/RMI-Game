@@ -4,32 +4,45 @@ import java.rmi.RemoteException;
 import java.rmi.server.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import client.AsiakasRajapinta;
 
 public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRajapinta, Runnable{
 
 	private static final long serialVersionUID = 1L;
 	TietokantaHallitsija tkh;
 	ArrayList<Kayttaja> kayttajat;
-	Scanner scan; 
-	
+	Scanner scan;
+
 	public PalvelinToteutus() throws RemoteException{
 		tkh = new TietokantaHallitsija();
 		kayttajat = new ArrayList<Kayttaja>();
 		scan = new Scanner(System.in);
 		new Thread(this).start();
-		System.out.println("Kommennot otettu käyttöön...");
+		System.out.println("Kommennot otettu kï¿½yttï¿½ï¿½n...");
 	}
 
-	public boolean liity() throws RemoteException {
+	public boolean liity(AsiakasRajapinta) throws RemoteException {
 		return false;
 	}
 
-	public synchronized boolean kirjaudu(String nimi, String salasana) throws RemoteException {
-		
-		return false;
+	public synchronized String kirjaudu(String nimi, String salasana) throws RemoteException {
+		String tulos = "";
+		ResultSet tulokset = tkh.kirjauduSisaan(nimi, salasana);
+		if(tulokset.next()){
+			if(tulokset.getString(3) == true){
+				tulos += 2 +tulokset.get(4);
+			}else{
+				Kayttajat.add(new Kayttaja(tulokset.getString(1), tulokset.getString(0)))
+				tulos += 1;
+			}
+		}else{
+			tulos += 1;
+		}
+
+		return tulos;
 	}
 
-	public synchronized boolean rekisteroidu(String nimi, String salasana) throws RemoteException {
+	public synchronized String rekisteroidu(String nimi, String salasana) throws RemoteException {
 		return false;
 	}
 
@@ -42,9 +55,9 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	}
 
 	public synchronized void kirjauduUlos() throws RemoteException {
-		kayttajat.remove(0); //<- parametri tulee olemaan jotain kunnollista, joka lähetetään kirjauduUlos metodin kutsussa parametrina
+		kayttajat.remove(0); //<- parametri tulee olemaan jotain kunnollista, joka lï¿½hetetï¿½ï¿½n kirjauduUlos metodin kutsussa parametrina
 	}
-	
+
 	private void otaKomento(String s){
 		String[] syote = s.split(" ", 2);
 		switch (syote[0]) {
@@ -61,37 +74,35 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 			listaaKayttajat();
 			break;
 		default:
-			System.out.println("Komentoa ei tunnisteta... Käytä help");
+			System.out.println("Komentoa ei tunnisteta... Kï¿½ytï¿½ help");
 			break;
 		}
 	}
-	
+
 	private void listaaKayttajat(){
 		if(kayttajat.size()!=0){
 			for (Kayttaja kayttaja : kayttajat) {
 				System.out.println(kayttaja.annaNimimerkki()+ ":" + kayttaja.annaID() + " " + kayttaja.annaTila());
 			}
 		}else{
-			System.out.println("Palvelimella ei ole käyttäjiä");
+			System.out.println("Palvelimella ei ole kï¿½yttï¿½jiï¿½");
 		}
 	}
-	
+
 	private void sammuta(){
 		try {
-			lahetaViesti("PALVELIN: PALVELIN SAMMUTETAAN MINUUTIN KULUTTUA. PYYDÄMME TEITÄ KIRJAUTUMAAN ULOS PELISTÄ");
+			lahetaViesti("PALVELIN: PALVELIN SAMMUTETAAN MINUUTIN KULUTTUA. PYYDï¿½MME TEITï¿½ KIRJAUTUMAAN ULOS PELISTï¿½");
 			Thread.sleep(60000);//Odotetaan minuutti
 			System.exit(0);
 		} catch (InterruptedException | RemoteException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void run() {
 		while(true){
 			otaKomento(scan.nextLine());
 		}
 	}
-
-
 
 }

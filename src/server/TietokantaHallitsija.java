@@ -6,7 +6,7 @@ public class TietokantaHallitsija {
 
 	private Connection yhteys = null;
 	private PreparedStatement  prstmt;
-	
+
 	public TietokantaHallitsija(){
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -20,26 +20,26 @@ public class TietokantaHallitsija {
 			return;
 		}
 	}
-	
-	public synchronized boolean kirjauduSisaan(String nimi, String salasana){
-		boolean onnistui = false;		
+
+	public synchronized ResultSet kirjauduSisaan(String nimi, String salasana){
+		boolean onnistui = false;
 		try {
-			prstmt = yhteys.prepareStatement("SELECT COUNT(*) FROM KAYTTAJA WHERE NIMIMERKKI = ? AND SALANSANA = ? );");
+			prstmt = yhteys.prepareStatement("SELECT * FROM KAYTTAJA WHERE NIMIMERKKI = ? AND SALANSANA = ? );");
 			prstmt.setString(1, nimi);
 			prstmt.setString(2, salasana);
 			ResultSet tulokset = prstmt.executeQuery();
-			tulokset.next();	
-			if(tulokset.getString(0).equals("1")){
-				onnistui = true;
-			}
-			prstmt.close();
-			return onnistui;
+//			tulokset.next();
+//			if(tulokset.getString(0).equals("1")){
+//				onnistui = true;
+//			}
+//			prstmt.close();
+			return tulokset;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return onnistui;
+			return null;
 		}
 	}
-	
+
 	public synchronized void rekisteroi(String nimi, String salasana){
 		try {
 			prstmt = yhteys.prepareStatement("INSERT INTO KAYTTAJA VALUES(NIMIMERKKI, SALASANA) VALUES (? , ?) );");
@@ -51,7 +51,7 @@ public class TietokantaHallitsija {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Connection annaYhteys(){
 		return yhteys;
 	}

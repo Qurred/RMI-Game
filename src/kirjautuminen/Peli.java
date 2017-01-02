@@ -1,4 +1,4 @@
-package kirjautuminen;
+package Kirjautuminen;
 
 import javax.swing.*;
 import java.awt.*;

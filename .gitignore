@@ -21,3 +21,6 @@ local.properties
 ###########################
 *.class
 src/domain/EclipseCompiler.txt
+chattiLog
+*.lck
+palvelinLog

@@ -24,7 +24,7 @@ public class TietokantaHallitsija {
 	public synchronized ResultSet kirjauduSisaan(String nimi, String salasana){
 		boolean onnistui = false;
 		try {
-			prstmt = yhteys.prepareStatement("SELECT * FROM KAYTTAJA WHERE NIMIMERKKI = ? AND SALANSANA = ? );");
+			prstmt = yhteys.prepareStatement("SELECT * FROM KAYTTAJA WHERE NIMIMERKKI = ? AND SALASANA = ? ;");
 			prstmt.setString(1, nimi);
 			prstmt.setString(2, salasana);
 			ResultSet tulokset = prstmt.executeQuery();
@@ -42,9 +42,11 @@ public class TietokantaHallitsija {
 
 	public synchronized void rekisteroi(String nimi, String salasana){
 		try {
-			prstmt = yhteys.prepareStatement("INSERT INTO KAYTTAJA VALUES(NIMIMERKKI, SALASANA) VALUES (? , ?) );");
+			prstmt = yhteys.prepareStatement("INSERT INTO KAYTTAJA (NIMIMERKKI, SALASANA, ESTETTY) VALUES (? , ? , ?) ;");
 			prstmt.setString(1, nimi);
 			prstmt.setString(2, salasana);
+			prstmt.setString(3, "0");
+			System.out.println("suoretataan komento...");
 			prstmt.executeUpdate();
 			prstmt.close();
 		} catch (SQLException e) {

@@ -2,6 +2,8 @@ package server;
 
 import java.rmi.RemoteException;
 
+import client.AsiakasRajapinta;
+
 public class Kayttaja{
 
 	public static final int IDLE = 0;
@@ -11,11 +13,13 @@ public class Kayttaja{
 	private int id;
 	private String nimimerkki;
 	private int tila;
+	private AsiakasRajapinta asiakas;
 	
-	public Kayttaja() throws RemoteException{
+	public Kayttaja(String nimimerkki,String id, AsiakasRajapinta arp) throws RemoteException{
 		this.tila = IDLE;
-		this.nimimerkki = "";
-		this.id = 0;
+		this.nimimerkki = nimimerkki;
+		this.id = Integer.parseInt(id);
+		this.asiakas = arp;
 	}
 	public void vaihdaTila(int i){
 		this.tila = i;
@@ -31,7 +35,11 @@ public class Kayttaja{
 		return this.tila;
 	}
 	public void vastaanotaViesti(String s){
-		
+		try {
+			asiakas.vastaanotaViesti(s);
+		} catch (RemoteException e) {
+			System.err.println("Virhe tapahtui lähetettäessä");
+		}
 	}
 	
 }

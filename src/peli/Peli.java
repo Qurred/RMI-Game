@@ -7,21 +7,27 @@ import Entiteetit.Hahmo;
 public class Peli implements Runnable {
 
 	
-	//Pitäisikö tiimit toteuttaa Tiimiluokkana? voisi helpoittaa datan käsittelyä
-	private ArrayList<Hahmo> sininenTiimi;
-	private ArrayList<Hahmo> punainenTiimi;
+	private Joukkue sininenTiimi;
+	private Joukkue punainenTiimi;
 	
 	private ArrayList<String> tapahtumat;
 	
-	public Peli(ArrayList<Hahmo> sininen, ArrayList<Hahmo> punainen /*, pelaajien yhteydet*/){
+	public Peli(Joukkue sininen, Joukkue punainen){
 		this.sininenTiimi = sininen;
 		this.punainenTiimi = punainen;
 		
 	}
 	
-	public void run() {}
+	public void run() {
+		tapahtumat.add("Aloitetaan peli pelaajien " + sininenTiimi.annaNimi() + " & " + punainenTiimi.annaNimi()+ " kesken");
+		
+	}
 	
-	public void kysyAsetelmat(){}
+	public void kysyAsetelmat(){
+		//TODO tämä pitäisi siirtää kokonaan clientin puolelle
+		sininenTiimi.kysyAsetelmaa();
+		punainenTiimi.kysyAsetelmaa();
+	}
 	
 	public void tarkistaVoittaja(){}
 	

@@ -11,6 +11,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import peli.Peli;
 
 import client.AsiakasRajapinta;
 
@@ -22,7 +23,8 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	private Scanner scan;
 	private Logger loggerPalvelin;
 	private Logger loggerChatti;
-
+	private ArrayList<Peli> pelit;
+	
 	public PalvelinToteutus() throws RemoteException{
 		loggerPalvelin = Logger.getLogger("Palvelin");
 		loggerChatti = Logger.getLogger("Chatti");
@@ -39,6 +41,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		tkh = new TietokantaHallitsija();
 		kayttajat = new ArrayList<Kayttaja>();
 		scan = new Scanner(System.in);
+		pelit = new ArrayList<Peli>();
 		new Thread(this).start();
 		System.out.println("Kommennot otettu kï¿½yttï¿½ï¿½n...");
 		loggerPalvelin.log(Level.INFO, "Palvelin käynnistetty");

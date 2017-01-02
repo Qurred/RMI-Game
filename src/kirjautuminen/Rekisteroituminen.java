@@ -1,8 +1,9 @@
 package kirjautuminen;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+  import javax.swing.*;
+  import java.awt.*;
+  import java.awt.event.*;
+
 // tässä on nyt importoitu paljon kaikkea paskaa...
 
 public class Rekisteroituminen extends JPanel{
@@ -14,6 +15,7 @@ public class Rekisteroituminen extends JPanel{
   // kentät
   private JTextField nimikentta, nimimekentta;
   private JPasswordField salakentta1, salakentta2;
+  
   
   public Rekisteroituminen(){
     
@@ -35,7 +37,7 @@ public class Rekisteroituminen extends JPanel{
     setLayout(null);
     virhe.setVisible(false);
     setVisible(false);
-    virhe.setForeground (Color.red);
+    //virhe.setForeGround(Colour.RED);
     //  actionlistener
     rekisteroidy.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e) {

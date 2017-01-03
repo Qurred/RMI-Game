@@ -1,17 +1,31 @@
 package Kirjautuminen;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.text.JTextComponent;
+import java.util.Date;
 
-// tässä on nyt importoitu paljon kaikkea paskaa...
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+//import java.awt.event.KeyListener;
+//import java.awt.event.KeyEvent;
+
+import java.awt.Color;
+import java.awt.BorderLayout;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
+import java.text.SimpleDateFormat;
 
 public class Peli extends JPanel{
   private JButton painike1, painike2, painike3, laheta;
   private JTextArea chatti;
   private JTextField viesti;
   private JLabel kirjoitus;
+  private JScrollPane scrollpane;
   
   public Peli(){
     painike1 = new JButton("Painike1");
@@ -21,7 +35,7 @@ public class Peli extends JPanel{
     viesti = new JTextField();
     chatti = new JTextArea();
     kirjoitus = new JLabel("Sinä:");
-    JScrollPane scrollPane = new JScrollPane(chatti);
+    scrollpane = new JScrollPane(chatti);
     
      painike1.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){ 
@@ -43,20 +57,27 @@ public class Peli extends JPanel{
                           );
      laheta.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){ 
-        chatti.append("sinä:     " + viesti.getText() + "\n");
+        SimpleDateFormat aika = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        Date aikanyt = new Date( );
+        chatti.append("sinä  " +  aika.format(aikanyt) + ":  " + viesti.getText() + "\n");
         viesti.setText("");
         
       }
     }
                           );
-       
+     
+   /*  laheta.addKeyListener(ne {
+      public void keyPressed(KeyEvent e) {
+      }
+   }
+     );*/                     
     painike1.setBounds(40,90,220,20);
     painike2.setBounds(40,130,220,20);
     painike3.setBounds(40,170,220,20);
     chatti.setBounds(300,30,300,500);
     viesti.setBounds(300,560,300,20);
     laheta.setBounds(300,580,300,20);
-    scrollPane.setBounds(300,30,320,500);
+    scrollpane.setBounds(300,30,320,500);
     kirjoitus.setBounds(300,530,300,20);
 
     
@@ -65,13 +86,13 @@ public class Peli extends JPanel{
     add(painike3);
     add(laheta);
     add(viesti);
-    add(scrollPane);
+    add(scrollpane);
     add(kirjoitus);
     
     setSize(1000,1000);
     setVisible(true);
-    setLayout(null);
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    setLayout(new BorderLayout());
+    scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
   }
 }
     

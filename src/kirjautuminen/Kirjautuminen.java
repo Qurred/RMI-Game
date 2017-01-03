@@ -1,10 +1,16 @@
 package Kirjautuminen;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-// tässä on nyt importoitu paljon kaikkea paskaa...
+import java.awt.CardLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 
 public class Kirjautuminen extends JFrame{
   

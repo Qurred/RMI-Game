@@ -14,12 +14,14 @@ public class Kayttaja{
 	private String nimimerkki;
 	private int tila;
 	private AsiakasRajapinta asiakas;
+	private String uuid;
 	
-	public Kayttaja(String nimimerkki,String id, AsiakasRajapinta arp) throws RemoteException{
+	public Kayttaja(String nimimerkki,String id, AsiakasRajapinta arp, String uuid) throws RemoteException{
 		this.tila = IDLE;
 		this.nimimerkki = nimimerkki;
 		this.id = Integer.parseInt(id);
 		this.asiakas = arp;
+		this.uuid = uuid;
 	}
 	public void vaihdaTila(int i){
 		this.tila = i;
@@ -33,6 +35,10 @@ public class Kayttaja{
 	}
 	public int annaTila(){
 		return this.tila;
+	}
+	
+	public String annaUUID(){
+		return this.uuid;
 	}
 	public void vastaanotaViesti(String s){
 		try {

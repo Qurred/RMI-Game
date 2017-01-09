@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class TietokantaHallitsija {
 
-	private Connection yhteys = null;
+	private Connection yhteys;
 	private PreparedStatement  prstmt;
 
 	public TietokantaHallitsija(){
@@ -32,16 +32,18 @@ public class TietokantaHallitsija {
 //			if(tulokset.getString(0).equals("1")){
 //				onnistui = true;
 //			}
-//			prstmt.close();
+			prstmt.close();
 			return tulokset;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
 			return null;
 		}
 	}
 
 	public synchronized void rekisteroi(String nimi, String salasana){
 		try {
+			if(!yhteys.isClosed()){
 			prstmt = yhteys.prepareStatement("INSERT INTO KAYTTAJA (NIMIMERKKI, SALASANA, ESTETTY) VALUES (? , ? , ?) ;");
 			prstmt.setString(1, nimi);
 			prstmt.setString(2, salasana);
@@ -49,6 +51,9 @@ public class TietokantaHallitsija {
 			System.out.println("suoretataan komento...");
 			prstmt.executeUpdate();
 			prstmt.close();
+			}else{
+				System.out.println("Onko yhteys suljettu? " + yhteys.isClosed());
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

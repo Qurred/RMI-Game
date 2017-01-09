@@ -51,5 +51,5 @@ public interface PalvelinRajapinta extends Remote{
 	 * @param identitykey
 	 * @param hahmot
 	 */
-	public void etsiPelia(String identitykey, ArrayList<Hahmo> hahmot);
+	public void etsiPelia(String identitykey, ArrayList<Hahmo> hahmot) throws RemoteException;
 }

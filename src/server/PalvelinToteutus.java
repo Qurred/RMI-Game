@@ -65,6 +65,9 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		System.out.println("Kokeillaan kirajutua tiedoilla: "+ nimi + ":" + salasana );
 		String tulos = "";
 		ResultSet tulokset = tkh.kirjauduSisaan(nimi, salasana);
+		if(tulokset == null){
+			tulos += 0;
+		}else{
 		try {
 			if(tulokset.isBeforeFirst()){ // Tarkistetaan onko resultsetissä osumia
 				if(tulokset.getString(4).equals(true)){ // Käyttäjä on estetty
@@ -87,6 +90,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		} catch (SQLException e) {
 			loggerPalvelin.log(Level.SEVERE, "Kirjautuminen epäonnistui tietokannan puolella, onko yhteys voimassa?" + e.toString());
 			tulos = "0";
+		}
 		}
 		return tulos;
 	}
@@ -141,9 +145,9 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	private void sammuta(){
 		try {
 			lahetaViesti("PALVELIN SAMMUTETAAN MINUUTIN KULUTTUA. PYYDï¿½MME TEITï¿½ KIRJAUTUMAAN ULOS PELISTï¿½", "[PALVELIN]");
-			Thread.sleep(60000);//Odotetaan minuutti
+			//Thread.sleep(60000);//Odotetaan minuutti
 			System.exit(0);
-		} catch (InterruptedException | RemoteException e) {
+		} catch (/*InterruptedException |*/ RemoteException e) {
 			e.printStackTrace();
 		}
 	}
@@ -182,7 +186,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	}
 
 	@Override
-	public void etsiPelia(String identitykey, ArrayList<Hahmo> hahmot) {
+	public void etsiPelia(String identitykey, ArrayList<Hahmo> hahmot) throws RemoteException {
 		for (Kayttaja kayttaja : kayttajat) {
 			if(kayttaja.annaUUID().equals(identitykey)){
 				kayttaja.vaihdaTila(Kayttaja.ETSIMASSA);

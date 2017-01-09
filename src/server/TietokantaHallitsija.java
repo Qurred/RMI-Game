@@ -11,6 +11,11 @@ public class TietokantaHallitsija {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			yhteys = DriverManager.getConnection("jdbc:sqlite:database.db");
+			if(yhteys != null){
+				System.out.println("Yhteys tietokantaan muodostettu");
+			}else{
+				System.out.println("Tietokantaan ei saatu yhteyttä");
+			}
 			yhteys.setAutoCommit(false);
 		} catch (ClassNotFoundException e) {
 			System.err.println("org.sqlite.JDBC did not found");
@@ -32,18 +37,17 @@ public class TietokantaHallitsija {
 //			if(tulokset.getString(0).equals("1")){
 //				onnistui = true;
 //			}
-			prstmt.close();
+//			prstmt.close();
 			return tulokset;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
 			return null;
 		}
 	}
 
 	public synchronized void rekisteroi(String nimi, String salasana){
 		try {
-			if(!yhteys.isClosed()){
+			if(yhteys != null && !yhteys.isClosed()){
 			prstmt = yhteys.prepareStatement("INSERT INTO KAYTTAJA (NIMIMERKKI, SALASANA, ESTETTY) VALUES (? , ? , ?) ;");
 			prstmt.setString(1, nimi);
 			prstmt.setString(2, salasana);
@@ -52,7 +56,10 @@ public class TietokantaHallitsija {
 			prstmt.executeUpdate();
 			prstmt.close();
 			}else{
-				System.out.println("Onko yhteys suljettu? " + yhteys.isClosed());
+				System.out.println("Onko yhteys suljettu? ");
+				if(yhteys == null){
+					System.out.println("YHTEYS ON NULL!");
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

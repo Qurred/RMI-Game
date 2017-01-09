@@ -31,7 +31,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	private Logger loggerChatti;
 	private ArrayList<Peli> pelit;
 	private ArrayList<Hahmo> hahmot;
-	
+
 	public PalvelinToteutus() throws RemoteException{
 		loggerPalvelin = Logger.getLogger("Palvelin");
 		loggerChatti = Logger.getLogger("Chatti");
@@ -49,17 +49,12 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		kayttajat = new ArrayList<Kayttaja>();
 		scan = new Scanner(System.in);
 		pelit = new ArrayList<Peli>();
-		
+
 		new Thread(this).start();
-		
+
 		System.out.println("Kommennot otettu kï¿½yttï¿½ï¿½n...");
 		loggerPalvelin.log(Level.INFO, "Palvelin käynnistetty");
 	}
-
-	public boolean liity(AsiakasRajapinta art) throws RemoteException {
-		return false;
-	}
-
 
 	public synchronized String kirjaudu(String nimi, String salasana, AsiakasRajapinta arp) throws RemoteException {
 		System.out.println("Kokeillaan kirajutua tiedoilla: "+ nimi + ":" + salasana );
@@ -68,29 +63,33 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		if(tulokset == null){
 			tulos += 0;
 		}else{
-		try {
-			if(tulokset.isBeforeFirst()){ // Tarkistetaan onko resultsetissä osumia
-				if(tulokset.getString(4).equals(true)){ // Käyttäjä on estetty
-					tulos += 2 +tulokset.getString(5); //Lisätään tulokseen luku 2 ja estämisen syy
-				}else{
-					for (Kayttaja kayttaja : kayttajat) {
-						if(kayttaja.annaID() == Integer.parseInt(tulokset.getString(1))){
-							tulos += 2 + "Käyttäjä on jo kirjautunut sisään, yritä hetken päästä myöhemmin";
-							return tulos;
+			try {
+				if(tulokset.isBeforeFirst()){ // Tarkistetaan onko resultsetissä osumia
+					if(tulokset.getString(4).equals(true)){ // Käyttäjä on estetty
+						tulos += 2 +tulokset.getString(5); //Lisätään tulokseen luku 2 ja estämisen syy
+					}else{
+						for (Kayttaja kayttaja : kayttajat) {
+							if(kayttaja.annaID() == Integer.parseInt(tulokset.getString(1))){
+								tulos += 2 + "Käyttäjä on jo kirjautunut sisään, yritä hetken päästä myöhemmin";
+								tulokset.getStatement().close();
+								tulokset.close();
+								return tulos;
+							}
 						}
+						String uuid = UUID.randomUUID().toString();
+						kayttajat.add(new Kayttaja(tulokset.getString(2), tulokset.getString(1), arp, uuid));
+						tulos += "1" + uuid;
 					}
-					String uuid = UUID.randomUUID().toString();
-					kayttajat.add(new Kayttaja(tulokset.getString(2), tulokset.getString(1), arp, uuid));
-					tulos += "1" + uuid;
+				}else{
+					System.out.println("Käyttäjää ei löydy");
+					tulos += 0;
 				}
-			}else{
-				System.out.println("Käyttäjää ei löydy");
-				tulos += 0;
+				tulokset.getStatement().close();
+				tulokset.close();
+			} catch (SQLException e) {
+				loggerPalvelin.log(Level.SEVERE, "Kirjautuminen epäonnistui tietokannan puolella, onko yhteys voimassa?" + e.toString());
+				tulos = "0";
 			}
-		} catch (SQLException e) {
-			loggerPalvelin.log(Level.SEVERE, "Kirjautuminen epäonnistui tietokannan puolella, onko yhteys voimassa?" + e.toString());
-			tulos = "0";
-		}
 		}
 		return tulos;
 	}
@@ -182,7 +181,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 				kayttajat.remove(i);
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -193,7 +192,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 				//Täällä pitäisi tehdä paljon muutakin ._.
 			}
 		}
-		
+
 	}
 
 }

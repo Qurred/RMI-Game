@@ -49,10 +49,8 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		kayttajat = new ArrayList<Kayttaja>();
 		scan = new Scanner(System.in);
 		pelit = new ArrayList<Peli>();
-
+		alustaHahmot();
 		new Thread(this).start();
-
-		System.out.println("Kommennot otettu kï¿½yttï¿½ï¿½n...");
 		loggerPalvelin.log(Level.INFO, "Palvelin käynnistetty");
 	}
 
@@ -161,8 +159,6 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		}
 	}
 
-
-
 	@Override
 	public String annaTiedot(String identitykey) throws RemoteException {
 		String tiedot = ""; //tulee olemaan formaattia: [Nimimerkki]:[muutasiat]
@@ -192,7 +188,10 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 				//Täällä pitäisi tehdä paljon muutakin ._.
 			}
 		}
-
+	}
+	
+	public void alustaHahmot(){
+		hahmot = tkh.annaHahmot();
 	}
 
 }

@@ -9,14 +9,13 @@ import java.rmi.registry.LocateRegistry;
 public class PalvelinSovellus {
 
 	public static final int PORTTI = 1099;
-	
+
 	public static void main(String[] args) {
 		try {
 			//System.setSecurityManager(new RMISecurityManager());
 			LocateRegistry.createRegistry(PORTTI);
 			InetAddress i = InetAddress.getLocalHost();
 			PalvelinToteutus palvelin = new PalvelinToteutus();
-			System.out.println(i.getHostAddress());
 			Naming.rebind("rmi://"+i.getHostAddress()+"/peli", palvelin);
 			System.out.println("Palvelin käynnistetty onnistuneesti sisäverkon osoitteella: " + i.getHostAddress()+"/"+PORTTI+
 					"\nRebindattu osoitteeseen: " + "rmi://"+i.getHostAddress()+"/peli");

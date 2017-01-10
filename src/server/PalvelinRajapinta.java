@@ -8,7 +8,7 @@ import Entiteetit.Hahmo;
 import client.AsiakasRajapinta;
 
 public interface PalvelinRajapinta extends Remote{
-//	public boolean liity(AsiakasRajapinta ar) throws RemoteException; //Varmaan poistetaan hyödyttömyyden takia
+	//	public boolean liity(AsiakasRajapinta ar) throws RemoteException; //Varmaan poistetaan hyödyttömyyden takia
 	/**
 	 * Metodi joka palauttaa String tyyppisen arvon koskien kirjautumista
 	 * @param nimi

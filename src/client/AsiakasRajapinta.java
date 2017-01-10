@@ -6,5 +6,6 @@ import java.rmi.RemoteException;
 public interface AsiakasRajapinta extends Remote{
  public void vastaanotaViesti(String msg) throws RemoteException;
  public int ping() throws RemoteException;
+ public String[] vastaanotaTulokset(String[] tulokset) throws RemoteException;
  
 }

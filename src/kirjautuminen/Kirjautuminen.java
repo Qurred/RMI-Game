@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,7 +24,7 @@ public class Kirjautuminen extends JFrame{
   private JPanel sailio;
   private JPanel kirjautuminen;
   private Rekisteroituminen rekisteroituminen;
-  private Peli peli;
+  private Aloitusnakyma aloitusnakyma;
   
   public Kirjautuminen(){
     // painikkeet
@@ -38,13 +40,16 @@ public class Kirjautuminen extends JFrame{
     sailio = new JPanel(cl);
     kirjautuminen = new JPanel();
     rekisteroituminen = new Rekisteroituminen();
-    peli = new Peli();
+    aloitusnakyma = new Aloitusnakyma();
+    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
     //layout null, sammutus rastista, n‰kyvyys, koko jne
    // this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setSize(500,300);
+    setSize(640, 480);
+    setResizable(false);
     kirjautuminen.setLayout(null);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
    
     // Sis‰‰nkirjautumisen actionlistener
     
@@ -54,7 +59,7 @@ public class Kirjautuminen extends JFrame{
       // "tyhjennet‰‰n" kirjoitetut kent‰t
       // user.setText("");
       // pass.setText("");
-          cl.show(sailio, "peli");
+          cl.show(sailio, "aloi");
      }
       }
                            );
@@ -84,7 +89,7 @@ public class Kirjautuminen extends JFrame{
     kirjautuminen.add(salasanakentta);
     sailio.add(kirjautuminen, "kirj");
     sailio.add(rekisteroituminen, "reks");
-    sailio.add(peli, "peli");
+    sailio.add(aloitusnakyma, "aloi");
     
      sailio.setVisible(true);
      setVisible(true);

@@ -20,23 +20,27 @@ import javax.swing.ScrollPaneConstants;
 
 import java.text.SimpleDateFormat;
 
-public class Peli extends JPanel{
+public class Aloitusnakyma extends JPanel{
+  
+  private static final long serialVersionUID = 1L;
   private JButton painike1, painike2, painike3, laheta;
   private JTextArea chatti;
   private JTextField viesti;
-  private JLabel kirjoitus;
+  private JLabel kirjoitus, virhe;
   private JScrollPane scrollpane;
+  private String nimi;
   
-  public Peli(){
-    painike1 = new JButton("Painike1");
-    painike2 = new JButton("Painike2");
-    painike3 = new JButton("Painike3");
+  public Aloitusnakyma(){
+    painike1 = new JButton("Aloita Peli");
+    painike2 = new JButton("Tilastot");
+    painike3 = new JButton("Kirjaudu ulos");
     laheta = new JButton("L‰het‰");
     viesti = new JTextField();
     chatti = new JTextArea();
     kirjoitus = new JLabel("Sin‰:");
+    virhe = new JLabel("K‰ytt‰ydy!");
     scrollpane = new JScrollPane(chatti);
-    
+
      painike1.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){ 
         painike1.setBackground(Color.RED);
@@ -57,11 +61,19 @@ public class Peli extends JPanel{
                           );
      laheta.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){ 
+        
         SimpleDateFormat aika = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         Date aikanyt = new Date( );
-        chatti.append("sin‰  " +  aika.format(aikanyt) + ":  " + viesti.getText() + "\n");
-        viesti.setText("");
         
+        // Jos viesti on tyhj‰ tai siin‰ on pelk‰st‰‰n v‰limerkkej‰, laittaa n‰kymiin virheviestin
+        
+        if (viesti.getText().trim().equals("")){
+        	virhe.setVisible(true);
+        }else{
+        	chatti.append("sin‰  " + aika.format(aikanyt) + "  " + viesti.getText() + "\n");
+        	virhe.setVisible(false);
+        }
+        viesti.setText("");  
       }
     }
                           );
@@ -78,8 +90,8 @@ public class Peli extends JPanel{
     viesti.setBounds(300,560,300,20);
     laheta.setBounds(300,580,300,20);
     scrollpane.setBounds(300,30,320,500);
-    kirjoitus.setBounds(300,530,300,20);
-
+    kirjoitus.setBounds(300,530,100,20);
+    virhe.setBounds(420, 530, 320, 20);
     
     add(painike1);
     add(painike2);
@@ -88,10 +100,17 @@ public class Peli extends JPanel{
     add(viesti);
     add(scrollpane);
     add(kirjoitus);
+    add(virhe);
+    
+    // Virheviesti jos yritt‰‰ l‰h‰tt‰‰ tyhj‰‰ viesti‰ 
+    
+    virhe.setVisible(false);
+    virhe.setForeground(Color.RED);
     
     setSize(1000,1000);
     setVisible(true);
     setLayout(new BorderLayout());
+    
     scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
   }
 }

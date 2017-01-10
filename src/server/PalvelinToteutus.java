@@ -49,7 +49,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		kayttajat = new ArrayList<Kayttaja>();
 		scan = new Scanner(System.in);
 		pelit = new ArrayList<Peli>();
-		alustaHahmot();
+//		alustaHahmot();
 		new Thread(this).start();
 		loggerPalvelin.log(Level.INFO, "Palvelin käynnistetty");
 	}

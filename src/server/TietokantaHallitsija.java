@@ -107,6 +107,40 @@ public class TietokantaHallitsija {
 	}
 	
 	public void alustaTietokanta(){
-		
+		try {
+			prstmt = yhteys.prepareStatement("CREATE TABLE KAYTTAJA("
+					+ "	ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ "	NIMIMERKKI TEXT NOT NULL,"
+					+ "	SALASANA TEXT NOT NULL,"
+					+ "	ESTETTY BOOLEAN NOT NULL,"
+					+ "	ESTAMISENSYY TEXT"
+					+ ");"
+					);
+			prstmt.execute();
+			prstmt.close();
+			prstmt  = yhteys.prepareStatement("CREATE TABLE PELI("
+					+ "	FOREIGN KEY(PELAAJA1) REFERENCES KAYTTAJA(ID),"
+					+ "	FOREIGN KEY(PELAAJA2) REFERENCES KAYTTAJA(ID),"
+					+ "	TUNNISTE INT PRIMARY KEY NOT NULL"
+					+ ");"
+					);
+			prstmt.execute();
+			prstmt.close();
+			prstmt = yhteys.prepareStatement("CREATE TABLE HAHMO("
+					+ "	ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ "	NIMIMERKKI TEXT NOT NULL,"
+					+ "	TYYPPI INTEGER NOT NULL,"
+					+ "	HP INTEGER NOT NULL,"
+					+ "	PUOLUSTUSLAHI INTEGER NOT NULL,"
+					+ "	PUOLISTUSMATKA INTEGER NOT NULL,"
+					+ "	NOPEUS INTEGER NOT NULL"
+					+ ");"
+					);
+			prstmt.execute();
+			prstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

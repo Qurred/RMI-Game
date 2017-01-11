@@ -1,5 +1,10 @@
-testi:1:1:1:1:1
-testi2:1:1:1:1:1
-testi3:1:1:1:1:1
-testi4:1:1:1:1:1
-testi5:1:1:1:1:1
+Knight:0:40:40:40:10:0
+Guardian:0:50:40:40:5:0
+Duelist:0:30:20:20:30:0
+Samurai:0:1:1:1:1:0
+Strategist:0:1:1:1:1:0
+Mage:1:1:1:1:1:0
+Sorcerer:1:1:1:1:1:0
+Hunter:1:1:1:1:1:0
+Gunner:1:1:1:1:1:0
+Archer:1:1:1:1:1:0

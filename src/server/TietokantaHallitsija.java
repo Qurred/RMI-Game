@@ -142,7 +142,8 @@ public class TietokantaHallitsija {
 					+ "	HP INTEGER NOT NULL,"
 					+ "	PUOLUSTUSLAHI INTEGER NOT NULL,"
 					+ "	PUOLUSTUSMATKA INTEGER NOT NULL,"
-					+ "	NOPEUS INTEGER NOT NULL"
+					+ "	NOPEUS INTEGER NOT NULL,"
+					+ " HYOKKAUS INTEGER NOT NULL"
 					+ ");"
 					);
 			tmp.executeUpdate(komento);
@@ -162,8 +163,8 @@ public class TietokantaHallitsija {
 			String rivi = "";
 			while((rivi = lukija.readLine()) != null){
 				String[] tmp = rivi.split(":");
-				prstmt = yhteys.prepareStatement("INSERT INTO HAHMO (NIMIMERKKI, TYYPPI, HP, PUOLUSTUSLAHI, PUOLUSTUSMATKA, NOPEUS)  VALUES( '" + tmp[0]
-						+ "'," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5] + ");");
+				prstmt = yhteys.prepareStatement("INSERT INTO HAHMO (NIMIMERKKI, TYYPPI, HP, PUOLUSTUSLAHI, PUOLUSTUSMATKA, NOPEUS, HYOKKAUS)  VALUES( '" + tmp[0]
+						+ "'," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5] +  "," + tmp[6] +");");
 							
 				prstmt.executeUpdate();
 				prstmt.close();

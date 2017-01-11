@@ -1,5 +1,10 @@
 package server;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -14,19 +19,19 @@ public class TietokantaHallitsija {
 	public TietokantaHallitsija(){
 		try {
 			Class.forName("org.sqlite.JDBC");
-			yhteys = DriverManager.getConnection("jdbc:sqlite:"+tietokannanNimi);
-			if(yhteys != null){
-				System.out.println("Yhteys tietokantaan muodostettu");
+			File tietokanta = new File("database.db");
+			if(tietokanta.exists()){
+				yhteys = DriverManager.getConnection("jdbc:sqlite:"+tietokannanNimi);
+				yhteys.setAutoCommit(false);
 			}else{
-				System.out.println("Tietokantaan ei saatu yhteyttä");
+				alustaTietokanta();
+
 			}
-			yhteys.setAutoCommit(false);
 		} catch (ClassNotFoundException e) {
-			System.err.println("org.sqlite.JDBC did not found");
-			return;
+			System.out.println("org.sqlite.JDBC ei löytynyt, tarkista luokkapolku");
+			System.exit(0);
 		} catch (SQLException e) {
-			System.err.println("Could not found a database" );
-			return;
+			
 		}
 	}
 
@@ -99,16 +104,20 @@ public class TietokantaHallitsija {
 			prstmt = yhteys.prepareStatement("SELECT * FROM HAHMOT ;");
 			ResultSet maara = prstmt.executeQuery();
 			maara.beforeFirst();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return hahmot;
 	}
-	
+
 	public void alustaTietokanta(){
+		System.out.println("Tietokantaa ei löytynyt, luodaan uusi tietokanta ja alustetaan");
 		try {
-			prstmt = yhteys.prepareStatement("CREATE TABLE KAYTTAJA("
+			yhteys = DriverManager.getConnection("jdbc:sqlite:"+tietokannanNimi);
+			yhteys.setAutoCommit(false);
+			Statement tmp = yhteys.createStatement();
+			String komento =		("CREATE TABLE KAYTTAJA("
 					+ "	ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "	NIMIMERKKI TEXT NOT NULL,"
 					+ "	SALASANA TEXT NOT NULL,"
@@ -116,30 +125,57 @@ public class TietokantaHallitsija {
 					+ "	ESTAMISENSYY TEXT"
 					+ ");"
 					);
-			prstmt.execute();
-			prstmt.close();
-			prstmt  = yhteys.prepareStatement("CREATE TABLE PELI("
-					+ "	FOREIGN KEY(PELAAJA1) REFERENCES KAYTTAJA(ID),"
-					+ "	FOREIGN KEY(PELAAJA2) REFERENCES KAYTTAJA(ID),"
+			tmp.executeUpdate(komento);
+			yhteys.commit();
+			komento  = ("CREATE TABLE PELI("
+					+ "	PELAAJA1 INTEGER REFERENCES KAYTTAJA(ID),"
+					+ "	PELAAJA2 INTEGER REFERENCES KAYTTAJA(ID),"
 					+ "	TUNNISTE INT PRIMARY KEY NOT NULL"
 					+ ");"
 					);
-			prstmt.execute();
-			prstmt.close();
-			prstmt = yhteys.prepareStatement("CREATE TABLE HAHMO("
+			tmp.executeUpdate(komento);
+			yhteys.commit();
+			komento = ("CREATE TABLE HAHMO("
 					+ "	ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "	NIMIMERKKI TEXT NOT NULL,"
 					+ "	TYYPPI INTEGER NOT NULL,"
 					+ "	HP INTEGER NOT NULL,"
 					+ "	PUOLUSTUSLAHI INTEGER NOT NULL,"
-					+ "	PUOLISTUSMATKA INTEGER NOT NULL,"
+					+ "	PUOLUSTUSMATKA INTEGER NOT NULL,"
 					+ "	NOPEUS INTEGER NOT NULL"
 					+ ");"
 					);
-			prstmt.execute();
-			prstmt.close();
+			tmp.executeUpdate(komento);
+			tmp.close();
+			yhteys.commit();
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		luoHahmot();
+	}
+	
+	public void luoHahmot(){
+		File hahmot = new File("hahmot.data");
+		try {
+			BufferedReader lukija = new BufferedReader(new FileReader(hahmot));
+			String rivi = "";
+			while((rivi = lukija.readLine()) != null){
+				String[] tmp = rivi.split(":");
+				prstmt = yhteys.prepareStatement("INSERT INTO HAHMO (NIMIMERKKI, TYYPPI, HP, PUOLUSTUSLAHI, PUOLUSTUSMATKA, NOPEUS)  VALUES( '" + tmp[0]
+						+ "'," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5] + ");");
+							
+				prstmt.executeUpdate();
+				prstmt.close();
+				yhteys.commit();	
+			}
+			lukija.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Tiedostoa " + hahmot.getName() + " ei löytynyt hahmojen alustamista varten");
+		} catch (IOException e) {
+			System.out.println("Tiedoston luku epäonnistui");
+			e.printStackTrace();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

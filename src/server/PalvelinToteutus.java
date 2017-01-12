@@ -49,7 +49,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		kayttajat = new ArrayList<Kayttaja>();
 		scan = new Scanner(System.in);
 		pelit = new ArrayList<Peli>();
-//		alustaHahmot();
+		alustaHahmot();
 		new Thread(this).start();
 		loggerPalvelin.log(Level.INFO, "Palvelin käynnistetty");
 	}
@@ -123,6 +123,9 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		case "kayttajat":
 			listaaKayttajat();
 			break;
+		case "hahmot":
+			listaaHahmot();
+			break;
 		default:
 			System.out.println("Komentoa ei tunnisteta... Kï¿½ytï¿½ help");
 			break;
@@ -194,4 +197,14 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		hahmot = tkh.annaHahmot();
 	}
 
+	public void listaaHahmot(){
+		for (Hahmo hahmo : hahmot) {
+			System.out.println(hahmo.toString());
+		}
+	}
+
+	@Override
+	public ArrayList<Hahmo> annaHahmot() throws RemoteException {
+		return (ArrayList<Hahmo>) hahmot.clone();
+	}
 }

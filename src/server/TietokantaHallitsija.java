@@ -31,7 +31,7 @@ public class TietokantaHallitsija {
 			System.out.println("org.sqlite.JDBC ei löytynyt, tarkista luokkapolku");
 			System.exit(0);
 		} catch (SQLException e) {
-			
+
 		}
 	}
 
@@ -101,10 +101,13 @@ public class TietokantaHallitsija {
 	public ArrayList<Hahmo> annaHahmot(){
 		ArrayList<Hahmo> hahmot = new ArrayList<Hahmo>();
 		try {
-			prstmt = yhteys.prepareStatement("SELECT * FROM HAHMOT ;");
+			prstmt = yhteys.prepareStatement("SELECT * FROM HAHMO ;");
 			ResultSet maara = prstmt.executeQuery();
-			maara.beforeFirst();
-
+			while(maara.next()){
+				hahmot.add(new Hahmo(Integer.parseInt(maara.getString(1)), maara.getString(2), Integer.parseInt(maara.getString(3)),
+						Integer.parseInt(maara.getString(4)), Integer.parseInt(maara.getString(5)), Integer.parseInt(maara.getString(6)),
+						Integer.parseInt(maara.getString(7)), Integer.parseInt(maara.getString(8))));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -149,13 +152,13 @@ public class TietokantaHallitsija {
 			tmp.executeUpdate(komento);
 			tmp.close();
 			yhteys.commit();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		luoHahmot();
 	}
-	
+
 	public void luoHahmot(){
 		File hahmot = new File("hahmot.data");
 		try {
@@ -165,7 +168,7 @@ public class TietokantaHallitsija {
 				String[] tmp = rivi.split(":");
 				prstmt = yhteys.prepareStatement("INSERT INTO HAHMO (NIMIMERKKI, TYYPPI, HP, PUOLUSTUSLAHI, PUOLUSTUSMATKA, NOPEUS, HYOKKAUS)  VALUES( '" + tmp[0]
 						+ "'," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5] +  "," + tmp[6] +");");
-							
+
 				prstmt.executeUpdate();
 				prstmt.close();
 				yhteys.commit();	

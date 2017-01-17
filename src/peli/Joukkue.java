@@ -10,14 +10,17 @@ import client.AsiakasRajapinta;
 public class Joukkue extends UnicastRemoteObject{
 	
 	private String nimi;
+	private int pelaajanID;
 	private AsiakasRajapinta arp;
 	private ArrayList<Hahmo> hahmot;
 	private int asetelma;
+	private int yhteisElama;
 	
-	public Joukkue(AsiakasRajapinta arp, String nimi) throws RemoteException{
+	public Joukkue(AsiakasRajapinta arp, String nimi, int pelaajanID) throws RemoteException{
 		this.hahmot = new ArrayList<Hahmo>();
 		this.arp = arp;
 		this.nimi = nimi;
+		this.asetaPelaajanID(pelaajanID);
 	}
 	
 	
@@ -45,18 +48,30 @@ public class Joukkue extends UnicastRemoteObject{
 		return asetelma;
 	}
 
-
-	public void asetaAsetelma(int asetelma) {
-		this.asetelma = asetelma;
-	}
-
-
-	public void kysyAsetelmaa(){
-		this.asetelma = 0; //arp.kysyAsetaelmaa();
+	public void annaTiedot(ArrayList<String> tapahtumat){
+		for (String tapahtuma : tapahtumat) {
+			//arp.tulostaTiedot(tapahtuma);
+		}	
 	}
 	
-	public void tiedotaVuoro(){
-		
+	public int annaPelaajanID() {
+		return pelaajanID;
+	}
+
+
+	public void asetaPelaajanID(int pelaajanID) {
+		this.pelaajanID = pelaajanID;
+	}
+
+
+	public double laskeMenetys(){
+		double maksimi = 0;
+		double nykyinen = 0;
+		for (Hahmo hahmo : hahmot) {
+			maksimi += hahmo.annaMaksimiElama();
+			nykyinen += hahmo.annaElama();
+		}
+		return nykyinen / maksimi * 100;
 	}
 
 }

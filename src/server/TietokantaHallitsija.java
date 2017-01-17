@@ -64,6 +64,7 @@ public class TietokantaHallitsija {
 					prstmt.setString(3, "0");
 					System.out.println("suoretataan komento...");
 					prstmt.executeUpdate();
+					yhteys.commit();
 					prstmt.close();
 				}else{
 					prstmt.close();

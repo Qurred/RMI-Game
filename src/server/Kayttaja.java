@@ -15,6 +15,7 @@ public class Kayttaja{
 	private int tila;
 	private AsiakasRajapinta asiakas;
 	private String uuid;
+	private boolean poissa = false;
 
 	public Kayttaja(String nimimerkki,String id, AsiakasRajapinta arp, String uuid) throws RemoteException{
 		this.tila = IDLE;
@@ -40,11 +41,16 @@ public class Kayttaja{
 	public String annaUUID(){
 		return this.uuid;
 	}
+	
+	public boolean annaPoissa(){
+		return this.poissa;
+	}
+	
 	public void vastaanotaViesti(String s){
 		try {
 			asiakas.vastaanotaViesti(s);
 		} catch (RemoteException e) {
-			System.err.println("Virhe tapahtui lähetettäessä");
+			poissa = true;
 		}
 	}
 

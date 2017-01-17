@@ -101,8 +101,12 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	public void lahetaViesti(String msg, String nimimerkki) throws RemoteException {
 		if(kayttajat.size()!=0){
 			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
-			for (Kayttaja kayttaja : kayttajat) {
-				kayttaja.vastaanotaViesti( nimimerkki +": " + msg);
+			for (int i = 0; i < kayttajat.size(); i++) {
+				if(!kayttajat.get(1).annaPoissa()){
+					kayttajat.get(i).vastaanotaViesti( nimimerkki +": " + msg);
+				}else{
+					kirjauduUlos(kayttajat.get(i).annaUUID());
+				}
 			}
 		}
 	}
@@ -144,10 +148,13 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	private void sammuta(){
 		try {
-			lahetaViesti("PALVELIN SAMMUTETAAN MINUUTIN KULUTTUA. PYYD�MME TEIT� KIRJAUTUMAAN ULOS PELIST�", "[PALVELIN]");
-			//Thread.sleep(60000);//Odotetaan minuutti
+			lahetaViesti("PALVELIN SAMMUTETAAN", "[PALVELIN]");
+			tkh.annaYhteys().close();
 			System.exit(0);
 		} catch (/*InterruptedException |*/ RemoteException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

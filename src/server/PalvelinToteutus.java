@@ -12,9 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import Entiteetit.Hahmo;
-import peli.Peli;
-
 import client.AsiakasRajapinta;
 
 /**
@@ -31,6 +28,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	private Logger loggerChatti;
 	private ArrayList<Peli> pelit;
 	private ArrayList<Hahmo> hahmot;
+	private ArrayList<Joukkue> joukkueet;
 
 	public PalvelinToteutus() throws RemoteException{
 		loggerPalvelin = Logger.getLogger("Palvelin");
@@ -93,7 +91,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	}
 
 	public synchronized String rekisteroidu(String nimi, String salasana) throws RemoteException {
-		tkh.rekisteroi(nimi, salasana);
+		tkh.rekisteroi(nimi.toLowerCase(), salasana);
 		loggerPalvelin.log(Level.INFO, "Uusi kirjautuminen rekisteröityminen: " + nimi+":"+salasana);
 		return "1";
 	}
@@ -195,7 +193,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		for (Kayttaja kayttaja : kayttajat) {
 			if(kayttaja.annaUUID().equals(identitykey)){
 				kayttaja.vaihdaTila(Kayttaja.ETSIMASSA);
-				//Täällä pitäisi tehdä paljon muutakin ._.
+				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), hahmot);
 			}
 		}
 	}

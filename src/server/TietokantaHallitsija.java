@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
-import Entiteetit.Hahmo;
-
 public class TietokantaHallitsija {
 
 	private final String tietokannanNimi = "database.db";

@@ -1,10 +1,9 @@
-package peli;
+package server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import Entiteetit.Hahmo;
 import client.AsiakasRajapinta;
 
 public class Joukkue extends UnicastRemoteObject{
@@ -16,8 +15,8 @@ public class Joukkue extends UnicastRemoteObject{
 	private int asetelma;
 	private int yhteisElama;
 	
-	public Joukkue(AsiakasRajapinta arp, String nimi, int pelaajanID) throws RemoteException{
-		this.hahmot = new ArrayList<Hahmo>();
+	public Joukkue(AsiakasRajapinta arp, String nimi, int pelaajanID, ArrayList<Hahmo> hahmot) throws RemoteException{
+		this.hahmot = (ArrayList<Hahmo>) hahmot.clone();
 		this.arp = arp;
 		this.nimi = nimi;
 		this.asetaPelaajanID(pelaajanID);

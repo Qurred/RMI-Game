@@ -27,6 +27,10 @@ public class Kayttaja{
 	public void vaihdaTila(int i){
 		this.tila = i;
 	}
+	
+	public AsiakasRajapinta annaRajapinta(){
+		return this.asiakas;
+	}
 
 	public int annaID(){
 		return this.id;

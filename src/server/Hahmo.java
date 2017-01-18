@@ -1,4 +1,4 @@
-package Entiteetit;
+package server;
 
 public class Hahmo {
 	
@@ -17,7 +17,7 @@ public class Hahmo {
 		this.id = id;
 		this.nimi = nimi;
 		this.tyyppi = tyyppi;
-		this.elama = hp;
+		this.elama = this.maksimiElama = hp;
 		this.puolustusLahi = hp;
 		this.puolustusMatka = pm;
 		this.nopeus = nopeus;

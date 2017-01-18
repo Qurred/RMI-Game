@@ -1,4 +1,4 @@
-package Kirjautuminen;
+package client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +16,9 @@ import javax.swing.JPasswordField;
 
 public class Rekisteroituminen extends JPanel{
   
-  // buttonit
+
+	private static final long serialVersionUID = 1L;
+// buttonit
   private JButton rekisteroidy;
   // labelit
   private JLabel nimi, nimimerkki, salasana1, salasana2, virhe;

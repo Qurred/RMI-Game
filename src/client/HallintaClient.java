@@ -1,11 +1,10 @@
-package Kirjautuminen;
+package client;
 
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import client.AsiakasRajapinta;
 import server.PalvelinRajapinta;
 
 @SuppressWarnings("deprecation")

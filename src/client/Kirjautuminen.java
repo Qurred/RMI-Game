@@ -1,4 +1,4 @@
-package Kirjautuminen;
+package client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +16,8 @@ import javax.swing.JPasswordField;
 
 public class Kirjautuminen extends JFrame{
   
+
+  private static final long serialVersionUID = 1L;
   private JButton kirjaudu, rekisteri;
   private JTextField kayttaja;
   private JPasswordField salasana;

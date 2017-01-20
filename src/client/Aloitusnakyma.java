@@ -4,15 +4,14 @@ import java.util.Date;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.awt.event.KeyListener;
-//import java.awt.event.KeyEvent;
-
+import java.io.IOException;
 import java.awt.Color;
 import java.awt.BorderLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -23,7 +22,7 @@ import javax.swing.ScrollPaneConstants;
 
 import java.text.SimpleDateFormat;
 
-public class Aloitusnakyma extends JPanel{
+public class Aloitusnakyma extends JFrame{
   
   private static final long serialVersionUID = 1L;
  // private static final String  = null;
@@ -34,7 +33,8 @@ public class Aloitusnakyma extends JPanel{
   private JTextField viesti;
   private JLabel kirjoitus, virhe, rage;
   private JScrollPane scrollpane;
-  private ImageIcon kuva1, kuva2;
+  private ImageIcon kuva1;
+  private JPanel aloitusnakyma;
 //  private String nimi;
   
   public Aloitusnakyma(){;
@@ -57,7 +57,17 @@ public class Aloitusnakyma extends JPanel{
     hahmo7 = new JRadioButton("s");
     hahmo8 = new JRadioButton("S");
     kuva1 = new ImageIcon("C:/Users/Omistaja/Documents/GitHub/RMI-Turn-Based-Game/src/client/rage.jpg");
-    kuva2 = new ImageIcon("C:/Users/Omistaja/Documents/GitHub/RMI-Turn-Based-Game/src/client/woodoo.jpg");
+    aloitusnakyma = new JPanel();
+    System.out.println(kuva1.getIconHeight());
+    System.out.println(kuva1.getIconWidth());
+    
+    // JFrame Koko, skaalaus
+    aloitusnakyma.setSize(640, 480);
+    setResizable(false);
+    aloitusnakyma.setLayout(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  //  setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+    
     
 
     info.addActionListener(new ActionListener(){
@@ -117,7 +127,7 @@ public class Aloitusnakyma extends JPanel{
   //  hahmo3.setBounds(40, 160,20,20);
    // hahmo4.setBounds(40, 190,20,20);
     //hahmo5.setBounds(40, 230,20,20);
-    rage.setBounds(40,100,80,80);
+    rage.setBounds(40,40,80,113);
     
 
     add(laheta);
@@ -128,7 +138,7 @@ public class Aloitusnakyma extends JPanel{
     add(kirjoitus);
     add(virhe);
     add(rage);
-    hahmot.add(hahmo1);
+   /* hahmot.add(hahmo1);
     hahmot.add(hahmo2);
     hahmot.add(hahmo3);
     hahmot.add(hahmo4);
@@ -143,13 +153,13 @@ public class Aloitusnakyma extends JPanel{
     add(hahmo4);
     add(hahmo5);
     
-    
-   // add(chatti);
+    */
     
     // Virheviesti jos yritt‰‰ l‰h‰tt‰‰ tyhj‰‰ viesti‰ 
     
     virhe.setVisible(false);
     virhe.setForeground(Color.RED);
+    rage.setOpaque(true);
     
     setSize(1000,1000);
     setVisible(true);

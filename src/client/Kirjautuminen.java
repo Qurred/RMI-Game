@@ -26,7 +26,7 @@ public class Kirjautuminen extends JFrame{
   private JPanel sailio;
   private JPanel kirjautuminen;
   private Rekisteroituminen rekisteroituminen;
-  private Aloitusnakyma aloitusnakyma;
+
   
   public Kirjautuminen(){
     // painikkeet
@@ -42,11 +42,9 @@ public class Kirjautuminen extends JFrame{
     sailio = new JPanel(cl);
     kirjautuminen = new JPanel();
     rekisteroituminen = new Rekisteroituminen();
-    aloitusnakyma = new Aloitusnakyma();
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
     //layout null, sammutus rastista, n‰kyvyys, koko jne
-   // this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(640, 480);
     setResizable(false);
     kirjautuminen.setLayout(null);
@@ -61,7 +59,7 @@ public class Kirjautuminen extends JFrame{
       // "tyhjennet‰‰n" kirjoitetut kent‰t
       // user.setText("");
       // pass.setText("");
-          cl.show(sailio, "aloi");
+          Aloitusnakyma aloitusnakyma = new Aloitusnakyma();
      }
       }
                            );
@@ -91,7 +89,7 @@ public class Kirjautuminen extends JFrame{
     kirjautuminen.add(salasanakentta);
     sailio.add(kirjautuminen, "kirj");
     sailio.add(rekisteroituminen, "reks");
-    sailio.add(aloitusnakyma, "aloi");
+
     
      sailio.setVisible(true);
      setVisible(true);

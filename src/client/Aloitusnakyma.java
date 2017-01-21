@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.BorderLayout;
 
 import javax.swing.ButtonGroup;
@@ -46,7 +47,11 @@ public class Aloitusnakyma extends JFrame{
     kirjoitus = new JLabel("Sinä:");
     virhe = new JLabel("Käyttäydy!");
     scrollpane = new JScrollPane(chatti);
+    
+    //Ensiksi ladataan kuva joka halutaan asettaa JLabeliin tässä tapauksessa.
+    kuva1 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/rage.jpg"))); //Ladataan suorituksen sijainnista
     rage = new JLabel(kuva1);
+    //Esimerkin loppu
     hahmot = new ButtonGroup();
     hahmo1 = new JRadioButton("Rage");
     hahmo2 = new JRadioButton("woodoo");
@@ -55,8 +60,7 @@ public class Aloitusnakyma extends JFrame{
     hahmo5 = new JRadioButton("s");
     hahmo6 = new JRadioButton("s");
     hahmo7 = new JRadioButton("s");
-    hahmo8 = new JRadioButton("S");
-    kuva1 = new ImageIcon("C:/Users/Omistaja/Documents/GitHub/RMI-Turn-Based-Game/src/client/rage.jpg");
+    hahmo8 = new JRadioButton("S");   
     aloitusnakyma = new JPanel();
     System.out.println(kuva1.getIconHeight());
     System.out.println(kuva1.getIconWidth());

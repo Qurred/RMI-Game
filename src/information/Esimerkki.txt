@@ -1,0 +1,9 @@
+Ensimmäiselle riville sijoitetaan hahmon nimi
+Toiselle riville sijoitetaan ns rikos
+Tähän riville sijoitetaan arvot ja muut erotettuna jollain myöhemmin sovittavalla merkillä
+tähän laitetaan kuvatiedoston nimi tiedostopäätteen kanssa
+Tähän riville laitetaan tarinaa
+
+
+
+Huomioithan että tiedoston nimi pitää olla hahmon ID alkaen 1 (ykkösestä). Tiedostomuodoksi voidaan sopia vaikka ".data"

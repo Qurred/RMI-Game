@@ -23,8 +23,27 @@ public class Peli implements Runnable {
 		this.punainenTiimi = punainen;
 		this.yhteys = yhteys;
 	}
+	
+	public Peli(Joukkue sininen, Connection yhteys){
+		this.sininenTiimi = sininen;
+		this.yhteys = yhteys;
+	}
 
+	public boolean onMolemmat(){
+		if(punainenTiimi != null){
+			return true;
+		}
+		return false;
+	}
+	
+	public void liityPeliin(Joukkue punainen){
+		this.punainenTiimi = punainen;
+	}
+	
 	public void run() {
+		while(punainenTiimi == null){
+			
+		}	
 		tunniste = UUID.randomUUID().toString();
 		tapahtumat.add("Pelaajien " + sininenTiimi.annaNimi() + " & " + punainenTiimi.annaNimi() + " joukot kohtasivat");
 		alkuTarkastus();
@@ -96,6 +115,9 @@ public class Peli implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public void vapautaPelaajat(){
+		//Vapautetaan pelaajat, eli asetetaan tilaksi vapaa
+	}
 
 }

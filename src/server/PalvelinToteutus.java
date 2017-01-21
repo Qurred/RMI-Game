@@ -1,12 +1,16 @@
 package server;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.Vector;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,32 +26,35 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	private static final long serialVersionUID = 1L;
 	private TietokantaHallitsija tkh;
-	private ArrayList<Kayttaja> kayttajat;
+	private List<Kayttaja> kayttajat;
 	private Scanner scan;
 	private Logger loggerPalvelin;
-	private Logger loggerChatti;
 	private ArrayList<Peli> pelit;
 	private ArrayList<Hahmo> hahmot;
-	private ArrayList<Joukkue> joukkueet;
+	private KeskusteluHallitsija kh;
 
 	public PalvelinToteutus() throws RemoteException{
 		loggerPalvelin = Logger.getLogger("Palvelin");
-		loggerChatti = Logger.getLogger("Chatti");
 		try {
 			FileHandler handlerPalvelin = new FileHandler("palvelinLog");
 			FileHandler handlerChatti = new FileHandler("chattiLog");
 			handlerChatti.setFormatter(new SimpleFormatter()); //Muuttaa login formaatin helpommin luettavaan muotoon xml:n sijasta
 			loggerPalvelin.addHandler(handlerPalvelin);
-			loggerChatti.addHandler(handlerChatti);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		loggerPalvelin.log(Level.INFO, "Palvelinta k‰ynnistet‰‰n");
 		tkh = new TietokantaHallitsija();
-		kayttajat = new ArrayList<Kayttaja>();
+		kayttajat = Collections.synchronizedList(new ArrayList<Kayttaja>());
 		scan = new Scanner(System.in);
 		pelit = new ArrayList<Peli>();
 		alustaHahmot();
+		try {
+			kh = new KeskusteluHallitsija(kayttajat);
+		} catch (IOException e) {
+			loggerPalvelin.log(Level.WARNING, "Keskustelujen hallitsijaa ei kyetty kaynnistamaan tallentamisen kannalta");
+		}
+		kh.start();
 		new Thread(this).start();
 		loggerPalvelin.log(Level.INFO, "Palvelin k‰ynnistetty");
 	}
@@ -97,16 +104,17 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	}
 
 	public void lahetaViesti(String msg, String nimimerkki) throws RemoteException {
-		if(kayttajat.size()!=0){
-			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
-			for (int i = 0; i < kayttajat.size(); i++) {
-				if(!kayttajat.get(1).annaPoissa()){
-					kayttajat.get(i).vastaanotaViesti( nimimerkki +": " + msg);
-				}else{
-					kirjauduUlos(kayttajat.get(i).annaUUID());
-				}
-			}
-		}
+		kh.lisaaJonoon(nimimerkki + ": " + msg);
+//		if(kayttajat.size()!=0){
+//			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
+//			for (int i = 0; i < kayttajat.size(); i++) {
+//				if(!kayttajat.get(1).annaPoissa()){
+//					kayttajat.get(i).vastaanotaViesti( nimimerkki +": " + msg);
+//				}else{
+//					kirjauduUlos(kayttajat.get(i).annaUUID());
+//				}
+//			}
+//		}
 	}
 
 	private void otaKomento(String s) throws RemoteException{
@@ -148,6 +156,13 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		try {
 			lahetaViesti("PALVELIN SAMMUTETAAN", "[PALVELIN]");
 			tkh.annaYhteys().close();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			kh.sammuta();
 			System.exit(0);
 		} catch (/*InterruptedException |*/ RemoteException e) {
 			e.printStackTrace();

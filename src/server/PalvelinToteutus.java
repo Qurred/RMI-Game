@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.Vector;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,40 +104,45 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	public void lahetaViesti(String msg, String nimimerkki) throws RemoteException {
 		kh.lisaaJonoon(nimimerkki + ": " + msg);
-//		if(kayttajat.size()!=0){
-//			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
-//			for (int i = 0; i < kayttajat.size(); i++) {
-//				if(!kayttajat.get(1).annaPoissa()){
-//					kayttajat.get(i).vastaanotaViesti( nimimerkki +": " + msg);
-//				}else{
-//					kirjauduUlos(kayttajat.get(i).annaUUID());
-//				}
-//			}
-//		}
+		System.out.println(nimimerkki + " sanoi jotain");
+		//		if(kayttajat.size()!=0){
+		//			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
+		//			for (int i = 0; i < kayttajat.size(); i++) {
+		//				if(!kayttajat.get(1).annaPoissa()){
+		//					kayttajat.get(i).vastaanotaViesti( nimimerkki +": " + msg);
+		//				}else{
+		//					kirjauduUlos(kayttajat.get(i).annaUUID());
+		//				}
+		//			}
+		//		}
 	}
 
 	private void otaKomento(String s) throws RemoteException{
-		String[] syote = s.split(" ", 2);
-		switch (syote[0]) {
-		case "apua":
-			System.out.println("Avustukset....");
-			break;
-		case "kuuluta":
-			System.out.println("Kuullutetaan viesti pelaajille...");
-			lahetaViesti(syote[1], "[PALVELIN]");
-			break;
-		case "sammuta":
-			sammuta();
-			break;
-		case "kayttajat":
-			listaaKayttajat();
-			break;
-		case "hahmot":
-			listaaHahmot();
-			break;
-		default:
-			System.out.println("Komentoa ei tunnisteta... K�yt� help");
-			break;
+		try{
+			String[] syote = s.split(" ", 2);
+			switch (syote[0]) {
+			case "apua":
+				System.out.println("Avustukset....");
+				break;
+			case "kuuluta":
+				System.out.println("Kuullutetaan viesti pelaajille...");
+				lahetaViesti(syote[1], "[PALVELIN]");
+				break;
+			case "sammuta":
+				sammuta();
+				break;
+			case "kayttajat":
+				listaaKayttajat();
+				break;
+			case "hahmot":
+				listaaHahmot();
+				break;
+			default:
+				System.out.println("Komentoa ei tunnisteta... K�yt� help");
+				break;
+			}
+		}catch (Exception e) {
+			System.out.println("Ei ollut oikeaa muotoa...");
 		}
 	}
 
@@ -204,10 +208,11 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	}
 
 	@Override
-	public void etsiPelia(String identitykey, ArrayList<Hahmo> hahmot) throws RemoteException {
+	public void etsiPelia(String identitykey, int[] hahmotiedot) throws RemoteException {
 		for (Kayttaja kayttaja : kayttajat) {
 			if(kayttaja.annaUUID().equals(identitykey) && kayttaja.annaTila() != Kayttaja.ETSIMASSA){
 				kayttaja.vaihdaTila(Kayttaja.ETSIMASSA);
+				ArrayList<Hahmo> hahmot = new ArrayList<>();
 				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), hahmot);
 				if(pelit.size() > 0){
 					for (int i = 0; i < pelit.size(); i++) {
@@ -224,7 +229,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 			}
 		}
 	}
-	
+
 	public void alustaHahmot(){
 		hahmot = tkh.annaHahmot();
 	}
@@ -235,8 +240,4 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		}
 	}
 
-	@Override
-	public ArrayList<Hahmo> annaHahmot() throws RemoteException {
-		return (ArrayList<Hahmo>) hahmot.clone();
-	}
 }

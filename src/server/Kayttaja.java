@@ -54,7 +54,8 @@ public class Kayttaja{
 		try {
 			asiakas.vastaanotaViesti(s);
 		} catch (RemoteException e) {
-			poissa = true;
+			System.out.println(this.nimimerkki + " ei vastaa");
+			this.poissa = true;
 		}
 	}
 

@@ -48,7 +48,6 @@ public class KeskusteluHallitsija extends Thread {
 		kirjoittaja.println("KeskusteluHallitsija P‰‰ll‰");
 		while(paalla){
 			while(!viestit.isEmpty()){
-				System.out.println("kuulutetaan");
 				kuuluta(viestit.get(0));
 				viestit.remove(0);
 			}
@@ -69,10 +68,11 @@ public class KeskusteluHallitsija extends Thread {
 		if(kayttajat.size()!=0){
 		//	loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
 			for (int i = 0; i < kayttajat.size(); i++) {
-				if(!kayttajat.get(1).annaPoissa()){
+				if(!kayttajat.get(i).annaPoissa()){
+					System.out.println(kayttajat.get(i).annaNimimerkki());
 					kayttajat.get(i).vastaanotaViesti(viesti);
 				}else{
-					//kirjauduUlos(kayttajat.get(i).annaUUID());
+					kayttajat.remove(i--);
 				}
 			}
 		}

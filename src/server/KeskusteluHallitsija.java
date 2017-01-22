@@ -24,8 +24,8 @@ public class KeskusteluHallitsija extends Thread {
 		KeskusteluHallitsija.viestit = new ArrayList<String>();
 		KeskusteluHallitsija.kayttajat = kayttajat;
 		GregorianCalendar kalenteri = new GregorianCalendar();
-		String paivaus = ""+kalenteri.get(Calendar.DATE)+"-" +kalenteri.get(Calendar.MONTH) + "-" + kalenteri.get(Calendar.YEAR);
-		logi = new File("keskusteluLogi"+paivaus);
+		String paivaus = ""+kalenteri.get(Calendar.DATE)+"-" +(kalenteri.get(Calendar.MONTH)+1) + "-" + kalenteri.get(Calendar.YEAR);
+		logi = new File("keskusteluLogi"+paivaus+".txt");
 		if(!logi.exists()){
 			logi.createNewFile();
 		}

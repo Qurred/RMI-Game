@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -177,14 +180,37 @@ public class HahmoNakyma extends JPanel {
 	 * Alustus tietojen luomista varten, tullaan lopulta luomaan tiedostoista /res kansiossa
 	 */
 	public void luoTiedot(){
-		tiedot.add(new Info("RagePoika", "Lahi", "tarinaaaaaaaa"));
-		tiedot.add(new Info("Zelai", "Lahi", "Zelai syntyi kahden luostarilupauksen antaneen ihmisen lapsena. H‰nen syntym‰‰ns‰ ei katsottu hyv‰ll‰, joten Zelain vanhemmat p‰‰ttiv‰t paeta sen hetkiselt‰ alueelta. Alueen hallitsija ei sallinut t‰t‰ ja l‰hetti miehet ottamaan kolmikon kiinni. Kidutus naiselle: choke pear (katso mik‰ suomeksi..) ja miehelle hengilt‰ nylkeminen p‰‰st‰ alasp‰in. Zelai oltaisiin heitetty kiehuvaan ˆljyyn, mutta kiduttaja otti Zelain omaksi lapseksensa. Kun Zelai oli 5:den vanha niin mies vei Zelain opettelemaan h‰nen kanssansa kidutusmenetelmi‰. 7-vuotiaana Zelai sai kuulla ett‰ mies oli kiduttanut h‰nen vanhempansa hengilt‰ yleisen uskonnon perusteella. Zelai syˆtt‰‰ miehelle ainetta joka heikent‰‰ hetkellisesti tajuntaa ja suostuttelee miehen menem‰‰n vapaehtoisesti judaksen tuoliin. Mies kuolee hitaasti ja Zelai poistuu etsim‰‰n tarinoiden kulttia, joka yritt‰‰ puhdistaa nykyist‰ uskontoa. Vuosien myˆt‰ Zelai lˆyt‰‰ kultin ja p‰‰see liittym‰‰n."));
-		tiedot.add(new Info("Rogue", "Lahi", "tarinaaaaaaaa"));
-		tiedot.add(new Info("SexyAmatsoni", "Lahi", "tarinaaaaaaaa"));
-		tiedot.add(new Info("Ponipoju", "Matka", "tarinaaaaaaaa"));
-		tiedot.add(new Info("Gladiaattori", "Lahi", "tarinaaaaaaaa"));
-		tiedot.add(new Info("Druidi", "Matka", "tarinaaaaaaaa"));
-		tiedot.add(new Info("VoodooMuija", "Matka", "tarinaaaaaaaa"));
+		int i = 1;
+		InputStreamReader virta = new InputStreamReader(getClass().getResourceAsStream("/information/"+i+".data"));
+		BufferedReader lukija;
+		try {
+			while(virta.ready()){
+				lukija = new BufferedReader(virta);
+				try {
+						String nimi = lukija.readLine();
+						String rikos = lukija.readLine();
+						String[] hahmotTiedot = lukija.readLine().split(":");
+						String tyyppi = hahmotTiedot[0];
+						String kuva = lukija.readLine();
+						lukija.readLine();
+						String tarina = "";
+						String tmp = "";
+						while((tmp = lukija.readLine())!=null){
+							tarina +=tmp;
+						}
+						tiedot.add(new Info(nimi, tyyppi, tarina, kuva));
+						try{
+						virta = new InputStreamReader((getClass().getResourceAsStream("/information/"+ ++i +".data")));
+						}catch (NullPointerException e) {
+							break;
+						}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -201,11 +227,13 @@ public class HahmoNakyma extends JPanel {
 		private String nimi;
 		private String luokka;
 		private String tarina;
+		private ImageIcon kuva;
 
-		public Info(String nimi, String luokka, String tarina){
+		public Info(String nimi, String luokka, String tarina, String kuva){
 			this.asetaNimi(nimi);
 			this.asetaLuokka(luokka);
 			this.asetaTarina(tarina);
+			this.asetaKuva(kuva);
 		}
 
 		public String annaNimi() {
@@ -220,6 +248,10 @@ public class HahmoNakyma extends JPanel {
 			return tarina;
 		}
 
+		public ImageIcon annaKuva(){
+			return kuva;
+		}
+
 		public void asetaNimi(String nimi) {
 			this.nimi = nimi;
 		}
@@ -230,6 +262,11 @@ public class HahmoNakyma extends JPanel {
 
 		public void asetaTarina(String tarina) {
 			this.tarina = tarina;
+		}
+
+		public void asetaKuva(String kuva){
+			System.out.println(kuva);
+			this.kuva = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/"+kuva)));
 		}
 	}
 

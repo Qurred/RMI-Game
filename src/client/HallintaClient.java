@@ -1,7 +1,7 @@
 package client;
 
 import java.rmi.Naming;
-import java.rmi.RMISecurityManager;
+//import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -21,21 +21,18 @@ public class HallintaClient extends UnicastRemoteObject implements AsiakasRajapi
 	
 	@SuppressWarnings("deprecation")
 	public HallintaClient() throws RemoteException{
-		System.setSecurityManager(new RMISecurityManager());
+		//System.setSecurityManager(new RMISecurityManager());
 		
 		try{
-			prp = (PalvelinRajapinta) Naming.lookup("rmi://" +osoite+"/peli");
+			Data.prp = (PalvelinRajapinta) Naming.lookup("rmi://" +"192.168.0.195"+"/peli");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
 	
 	@Override
 	public void vastaanotaViesti(String msg) throws RemoteException {
-		// TODO Auto-generated method stub
-		
+		System.out.println(msg);		
 	}
 
 	@Override

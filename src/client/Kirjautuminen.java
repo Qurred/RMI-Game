@@ -2,7 +2,7 @@ package client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.rmi.RemoteException;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -26,9 +26,17 @@ public class Kirjautuminen extends JFrame{
   private JPanel sailio;
   private JPanel kirjautuminen;
   private Rekisteroituminen rekisteroituminen;
+  private HallintaClient hc;
 
   
   public Kirjautuminen(){
+	  
+	  try {
+		HallintaClient hc = new HallintaClient();
+	} catch (RemoteException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
     // painikkeet
     kirjaudu = new JButton("Kirjaudu sisään");
     rekisteri = new JButton("Etkö ole rekisteröitynyt?");
@@ -55,11 +63,14 @@ public class Kirjautuminen extends JFrame{
     
     kirjaudu.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
-      // tässä pitäis tarkistaa tietokannasta täsmääkö salasana ja käyttäjänimi
-      // "tyhjennetään" kirjoitetut kentät
-      // user.setText("");
-      // pass.setText("");
-          Aloitusnakyma aloitusnakyma = new Aloitusnakyma();
+    	  try{ 
+    		  Data.prp.kirjaudu(kayttaja.getText(), String.valueOf(salasana.getPassword()),hc);
+    		  System.out.print("oot");
+              Aloitusnakyma aloitusnakyma = new Aloitusnakyma(kayttaja.getText());
+    	  }catch (RemoteException e2){
+    		  e2.printStackTrace();
+    	  }
+          
      }
       }
                            );

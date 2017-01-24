@@ -1,5 +1,6 @@
 package client;
 
+
 import java.util.Date;
 import java.util.Enumeration;
 import java.awt.event.ActionEvent;
@@ -7,8 +8,7 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
+
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -37,9 +37,11 @@ public class Aloitusnakyma extends JFrame{
   private JScrollPane scrollpane;
   private ImageIcon kuva1, kuva2, kuva3, kuva4, kuva5, kuva6;
   private JPanel aloitusnakyma;
-  private CardLayout cl;
+ 
+	
   
-  public Aloitusnakyma(){;
+  public Aloitusnakyma(String nimi){
+    super(nimi);
     info = new JButton("Katso tietoa hahmoista");
     hyvaksy = new JButton("Hyväksy valinta");
     laheta = new JButton("Lähetä");
@@ -48,7 +50,8 @@ public class Aloitusnakyma extends JFrame{
     kirjoitus = new JLabel("Sinä:");
     virhe = new JLabel("Käyttäydy!");
     scrollpane = new JScrollPane(chatti);
-    
+
+   
     //Ensiksi ladataan kuva joka halutaan asettaa JLabeliin tässä tapauksessa. Kuvat + labelit.
     
     kuva1 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/rage.jpg"))); //Ladataan suorituksen sijainnista
@@ -81,8 +84,9 @@ public class Aloitusnakyma extends JFrame{
     hahmo7 = new JRadioButton("juho");
     //hahmo8 = new JRadioButton("rogue");   
     aloitusnakyma = new JPanel();
-    cl = new CardLayout();
+  
     
+
     // JFrame Koko, skaalaus
     setSize(640, 480);
     setResizable(false);
@@ -124,8 +128,13 @@ public class Aloitusnakyma extends JFrame{
         if (viesti.getText().trim().equals("")){
         	virhe.setVisible(true);
             }else{
-        	   chatti.append("sinä  " + aika.format(aikanyt) + "  " + viesti.getText() + "\n");
+        	   try {
+				Data.prp.lahetaViesti( viesti.getText(),nimi);
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
         	   virhe.setVisible(false);
+        	   
             }
         viesti.setText("");  
        }

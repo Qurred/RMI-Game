@@ -104,7 +104,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	public void lahetaViesti(String msg, String nimimerkki) throws RemoteException {
 		kh.lisaaJonoon(nimimerkki + ": " + msg);
-		System.out.println(nimimerkki + " sanoi jotain");
+		System.out.println(nimimerkki + ": " + msg);
 		//		if(kayttajat.size()!=0){
 		//			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
 		//			for (int i = 0; i < kayttajat.size(); i++) {

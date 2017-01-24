@@ -64,7 +64,6 @@ public class KeskusteluHallitsija extends Thread {
 	}
 
 	private void kuuluta(String viesti){
-		kirjoittaja.println(viesti);
 		if(kayttajat.size()!=0){
 		//	loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
 			for (int i = 0; i < kayttajat.size(); i++) {

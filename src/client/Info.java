@@ -29,6 +29,8 @@ public class Info{
 	public String annaTarina() {
 		return tarina;
 	}
+	
+	
 
 	public ImageIcon annaKuva(){
 		return kuva;

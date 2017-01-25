@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import client.Info;
+
 public class HahmoNakyma extends JPanel {
 
 	private ArrayList<Info> tiedot;
@@ -130,7 +132,7 @@ public class HahmoNakyma extends JPanel {
 		hahmot.setVisible(true);
 		Dimension empty = new Dimension(0, 6);
 		for (int i = 0; i < tiedot.size(); i++) {				
-			HahmoLabel nappi = new HahmoLabel(tausta, taustaValittu, taustaHover,tiedot.get(i).nimi, i);
+			HahmoLabel nappi = new HahmoLabel(tausta, taustaValittu, taustaHover,tiedot.get(i).annaNimi(), i);
 			nappi.setText(tiedot.get(i).annaNimi());
 			nappi.setVisible(true);
 			nappi.setAlignmentX(Component.CENTER_ALIGNMENT);

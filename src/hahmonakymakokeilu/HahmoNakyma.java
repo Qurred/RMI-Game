@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import client.Data;
 import client.Info;
 
 public class HahmoNakyma extends JPanel {
@@ -213,6 +214,7 @@ public class HahmoNakyma extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Data.tiedot = tiedot;
 	}
 
 	/**

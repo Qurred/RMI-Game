@@ -1,11 +1,10 @@
-package nakumat;
+package nakymat;
+
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -14,13 +13,13 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import client.Data;
 import server.PalvelinRajapinta;
 
 public class OsoiteNakyma extends JPanel {
@@ -29,15 +28,14 @@ public class OsoiteNakyma extends JPanel {
 	private JTextField osoite;
 	private JButton yhdista;
 	private JLabel virhe;
-	//Testaamiseen, poistetaan
-	private JLabel tausta;
-	//////////////////////////////////////
 
 	public OsoiteNakyma(Dimension dim){
 		super();
 		alusta();
 		this.setLayout(null);
 		this.setBounds(0, 0, (int)dim.getWidth(), (int)dim.getHeight());
+		this.setBackground(null);
+		this.setOpaque(false);
 		this.setVisible(true);
 
 		//Luodaan näkymän fontit
@@ -53,7 +51,6 @@ public class OsoiteNakyma extends JPanel {
 		virhe.setVisible(false);
 		virhe.setHorizontalAlignment(SwingConstants.CENTER);
 
-
 		//Alustetaan otsikko
 		otsikko = new JLabel("Syötä IP-osoite");
 		otsikko.setForeground(new Color(200, 200, 200));
@@ -68,49 +65,24 @@ public class OsoiteNakyma extends JPanel {
 		osoite.setFont(osoiteFontti);
 		osoite.setVisible(true);
 		osoite.setHorizontalAlignment(SwingConstants.CENTER);
-
+		osoite.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {yhdista();}		
+		});
 		//Alustetaan yhdista
 		yhdista = new JButton("Yhdista");
 		yhdista.setBounds(296,300,211,30);
 		yhdista.setFont(yhdistaFontti);
 		yhdista.setVisible(true);
 		yhdista.setHorizontalAlignment(SwingConstants.CENTER);
-		yhdista.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if(!osoite.getText().trim().equals("")){
-					try {
-						//Data.prp = (PalvelinRajapinta) Naming.lookup("rmi://" + osoite.getText() + "/peli");	
-						//data.ip = osoite.getText();
-						PalvelinRajapinta prp = (PalvelinRajapinta) Naming.lookup("rmi://" + osoite.getText() + "/peli");	// <- Poista
-						osoite.setText("");
-						virhe.setVisible(false);
-						asetaNakyvaksi(false);
-						//Data.asetaNakuvaksi(Data.KIRJAUTUMINEN);
-					} catch (MalformedURLException | RemoteException | NotBoundException v) {
-						osoite.setText("");
-						virhe.setVisible(true);
-					}
-
-				}
-
-			}
+		yhdista.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){yhdista();}
 		});
-
-		//Testaamiseen tarkoitettua asiaa
-		tausta = new JLabel();
-		tausta.setBounds(0, 0, dim.width, dim.height);
-		tausta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/tausta.png"))));
-		tausta.setOpaque(false);
-		tausta.setVisible(true);
-
+		//Lisätään komponentit
 		this.add(virhe);
 		this.add(otsikko);
 		this.add(osoite);
 		this.add(yhdista);
-		//Testaamiseen
-		this.add(tausta);
 	}
 
 	private void alusta(){
@@ -121,10 +93,31 @@ public class OsoiteNakyma extends JPanel {
 		} catch(FontFormatException e){} catch (IOException e){System.out.println("Ei lataa");}
 	}
 
+	/**
+	 * @deprecated
+	 * @param t
+	 */
 	public void asetaNakyvaksi(boolean t){
 		this.setVisible(t);
 		if(t){
 			virhe.setVisible(false);
 		}
 	}
+	
+	private void yhdista(){
+		if(!osoite.getText().trim().equals("")){
+			try {
+				Data.prp = (PalvelinRajapinta) Naming.lookup("rmi://" + osoite.getText() + "/peli");
+				osoite.setText("");
+				virhe.setVisible(false);
+				//Vaihdetaan näkymä
+				Data.vaihdaNakyma(Data.KIRJAUTUMINEN);
+			} catch (MalformedURLException | RemoteException | NotBoundException v) {
+				osoite.setText("");
+				virhe.setVisible(true);
+			}
+		}
+	
+	}
 }
+

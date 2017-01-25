@@ -30,11 +30,9 @@ public class HahmoNakyma extends JPanel {
 	//Tiedotosion arvot
 	private JLabel nimi_komponentti;
 	private JLabel luokka_komponentti;
-
 	private JLabel piilota;
-
-	private JTextArea tarina_komponentti;
 	private JLabel tausta;
+	private JTextArea tarina_komponentti;
 	private JScrollPane tarina_alue;
 
 	//Valittu nappi
@@ -48,7 +46,8 @@ public class HahmoNakyma extends JPanel {
 		tiedot = new ArrayList<>();
 		this.setLayout(null);
 		this.setBounds(0, 0, (int)dim.getWidth(), (int)dim.getHeight());
-		this.setBackground(Color.DARK_GRAY);
+		this.setBackground(/*Color.DARK_GRAY*/null);
+		this.setOpaque(false);
 		this.setVisible(true);
 		luoTiedot();
 		alustamuut();
@@ -61,11 +60,11 @@ public class HahmoNakyma extends JPanel {
 		piilota.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				asetaNakyvaksi(false);
+				Data.vaihdaNakyma(Data.PERUSNAKYMA);
 			}
 		});
-		
-		this.add(piilota);
+
+		this.add(piilota); //Palauttaa takas perusnäkymään
 		//Tausta
 		tausta = new JLabel();
 		tausta.setBounds(0, 0, dim.width, dim.height);
@@ -82,21 +81,20 @@ public class HahmoNakyma extends JPanel {
 		Font nimiFontti = new Font("Verdana", Font.HANGING_BASELINE, 40);
 		Font tarinaFontti = new Font("Verdana", Font.PLAIN, 12);
 		Font luokkaFontti = new Font("Verdana", Font.ROMAN_BASELINE, 14);
-
+		//Esitettävän nimikomponentin alustus ja arvojen asetukset
 		nimi_komponentti = new JLabel(tiedot.get(0).annaNimi());
 		nimi_komponentti.setFont(nimiFontti);
 		nimi_komponentti.setOpaque(false);
 		nimi_komponentti.setBounds(224,48,352,60);
 		nimi_komponentti.setHorizontalAlignment(SwingConstants.CENTER);
 		nimi_komponentti.setVisible(true);
-
+		//Esitettävän luokkakomponentin alustus ja arvojen asetukset
 		luokka_komponentti = new JLabel("Luokka: "+tiedot.get(0).annaLuokka());
 		luokka_komponentti.setFont(luokkaFontti);
 		luokka_komponentti.setOpaque(false);
 		luokka_komponentti.setBounds(472,108,104,20);
 		luokka_komponentti.setVisible(true);
-
-
+		//Esitettävän tarinakomponentin alustus ja arvojen asetukset
 		tarina_komponentti = new JTextArea(tiedot.get(0).annaTarina());
 		tarina_komponentti.setCaretPosition(0);
 		tarina_alue = new JScrollPane(tarina_komponentti, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -106,16 +104,16 @@ public class HahmoNakyma extends JPanel {
 		tarina_komponentti.setEditable(false);
 		tarina_komponentti.setWrapStyleWord(true);
 		tarina_komponentti.setLineWrap(true);
-		tarina_alue.setBounds(224, 108, 247, 324);
 		tarina_komponentti.setVisible(true);
 		tarina_komponentti.setCaretPosition(0);
+		tarina_alue.setBounds(224, 108, 247, 324);
 		tarina_alue.getVerticalScrollBar().setUI(new OmaScrollBar());
 		tarina_alue.setOpaque(false);
 		tarina_alue.getViewport().setOpaque(false);
 		tarina_alue.getViewport().setBackground(null);
 		tarina_alue.setVisible(true);
 		tarina_alue.setBorder(null);
-		
+
 		//Komponenttien lisäys
 		this.add(nimi_komponentti);
 		this.add(luokka_komponentti);
@@ -124,8 +122,8 @@ public class HahmoNakyma extends JPanel {
 
 	public void alustaLista(){
 		ImageIcon tausta = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappi.png")));
-		ImageIcon taustaValittu = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiHover.png")));
-		ImageIcon taustaHover = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiValittu.png")));
+		ImageIcon taustaValittu = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiValittu.png")));
+		ImageIcon taustaHover = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiHover.png")));
 		hahmot = new JPanel();
 		hahmot.setLayout(new BoxLayout(hahmot, BoxLayout.Y_AXIS));
 		hahmot.setBounds(64, 48,160, 384);
@@ -190,23 +188,23 @@ public class HahmoNakyma extends JPanel {
 			while(virta.ready()){
 				lukija = new BufferedReader(virta);
 				try {
-						String nimi = lukija.readLine();
-						String rikos = lukija.readLine();
-						String[] hahmotTiedot = lukija.readLine().split(":");
-						String tyyppi = hahmotTiedot[0];
-						String kuva = lukija.readLine();
-						lukija.readLine();
-						String tarina = "";
-						String tmp = "";
-						while((tmp = lukija.readLine())!=null){
-							tarina +=tmp;
-						}
-						tiedot.add(new Info(nimi, tyyppi, tarina, kuva));
-						try{
+					String nimi = lukija.readLine();
+					String rikos = lukija.readLine();
+					String[] hahmotTiedot = lukija.readLine().split(":");
+					String tyyppi = hahmotTiedot[0];
+					String kuva = lukija.readLine();
+					lukija.readLine();
+					String tarina = "";
+					String tmp = "";
+					while((tmp = lukija.readLine())!=null){
+						tarina +=tmp;
+					}
+					tiedot.add(new Info(nimi, tyyppi, tarina, kuva));
+					try{
 						virta = new InputStreamReader((getClass().getResourceAsStream("/information/"+ ++i +".data")));
-						}catch (NullPointerException e) {
-							break;
-						}
+					}catch (NullPointerException e) {
+						break;
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -221,9 +219,9 @@ public class HahmoNakyma extends JPanel {
 	 * Metodi jonka avulla voidaan asettaa HahmoNakyma-paneeli näkyväksi ja ei
 	 * Paneelista löytyy JLabel, joka piilottaa tämän näkymän tarvittaessa.
 	 * @param totuus
+	 * @deprecated
 	 */
 	public void asetaNakyvaksi(boolean totuus){
 		this.setVisible(totuus);
 	}
-	
 }

@@ -42,9 +42,8 @@ public class HallintaClient extends UnicastRemoteObject implements AsiakasRajapi
 	}
 
 	@Override
-	public String[] vastaanotaTulokset(String[] tulokset) throws RemoteException {
+	public void vastaanotaTulokset(String[] tulokset) throws RemoteException {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

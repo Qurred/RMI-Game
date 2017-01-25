@@ -25,17 +25,17 @@ public class Kirjautuminen extends JPanel{
 	private JPanel sailio;
 	private JPanel kirjautuminen;
 	private Rekisteroituminen rekisteroituminen;
-	private HallintaClient hc;
+//	private HallintaClient hc;
 
 
 	public Kirjautuminen(){
-
+		/*
 		try {
 			HallintaClient hc = new HallintaClient();
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 		// painikkeet
 		kirjaudu = new JButton("Kirjaudu sisään");
 		rekisteri = new JButton("Etkö ole rekisteröitynyt?");
@@ -61,7 +61,7 @@ public class Kirjautuminen extends JPanel{
 		kirjaudu.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try{ 
-					Data.prp.kirjaudu(kayttaja.getText(), String.valueOf(salasana.getPassword()),hc);
+					Data.prp.kirjaudu(kayttaja.getText(), String.valueOf(salasana.getPassword()),Data.arp);
 					System.out.print("oot");
 					Aloitusnakyma aloitusnakyma = new Aloitusnakyma(kayttaja.getText());
 				}catch (RemoteException e2){

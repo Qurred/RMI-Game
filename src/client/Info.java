@@ -30,8 +30,6 @@ public class Info{
 		return tarina;
 	}
 
-
-
 	public ImageIcon annaKuva(){
 		return kuva;
 	}
@@ -49,7 +47,6 @@ public class Info{
 	}
 
 	public void asetaKuva(String kuva){
-		System.out.println(kuva);
 		this.kuva = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/"+kuva)));
 	}
 }

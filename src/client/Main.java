@@ -1,14 +1,23 @@
 package client;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
-public class Main {
-	private static JFrame ikkuna;
-	private static Dimension dim = new Dimension(800,450);
+public class Main extends UnicastRemoteObject implements AsiakasRajapinta {
+	private JFrame ikkuna;
+	private Dimension dim = new Dimension(800,450);
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws RemoteException{
+		Main main = new Main();
+	}
+
+	public Main() throws RemoteException{
 		Data.Alusta();
 		Data.lisaaNakymat(dim);
 		ikkuna = new JFrame("RMI-Game"); 
@@ -21,6 +30,32 @@ public class Main {
 		for(int i = 0; i < Data.nakymat.size(); i++){
 			ikkuna.add(Data.nakymat.get(i));
 		}
+		JLabel tausta = new JLabel();
+		tausta.setBounds(0, 0, dim.width, dim.height);
+		tausta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/tausta.png"))));
+		tausta.setOpaque(false);
+		tausta.setVisible(true);
+		ikkuna.add(tausta);
+		Data.arp = this;
+
+	}
+
+	@Override
+	public void vastaanotaViesti(String msg) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int ping() throws RemoteException {
+		return 0;
+	}
+
+	@Override
+	public void vastaanotaTulokset(String[] tulokset) throws RemoteException {
+		//Täällä lisättäisiin saadut tulokset olevaan alueeseen johon tulee tulokset
+	}
+}
 
 
 

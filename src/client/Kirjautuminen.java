@@ -44,18 +44,37 @@ public class Kirjautuminen extends JPanel{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
 		//layout null, sammutus rastista, näkyvyys, koko jne
-		setSize(640, 480);
+		setSize(dim.width, dim.height);
 		setLayout(null);
-		setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		setBackground(null);
+		setOpaque(false);
+		
+		//setLocation(0,0);
 
 		// Sisäänkirjautumisen actionlistener
 
 		kirjaudu.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try{ 
-					Data.prp.kirjaudu(kayttaja.getText(), String.valueOf(salasana.getPassword()),Data.arp);
-					System.out.print("oot");
-					Aloitusnakyma aloitusnakyma = new Aloitusnakyma(kayttaja.getText());
+					String tulos = Data.prp.kirjaudu(kayttaja.getText(), String.valueOf(salasana.getPassword()),Data.arp);
+					System.out.println(tulos);
+					int arvo = Integer.parseInt(tulos.substring(0, 1));
+					switch (arvo) {
+					case 0: //Kyseisellä kyselyllä ei ollut tulosta
+							System.out.println("Annettua yhdistelmää ei löydetty");
+							salasana.setText("");
+						break;
+					case 1:
+							System.out.println("Löydettiin");
+							Data.nimi = kayttaja.getText();
+							Data.vaihdaNakyma(Data.HAHMONAKYMA); //Pitää vaihtaa päänäkymään myöhemmin kun saadaan kaikki toimimaan
+						break;			
+					default:
+						System.out.println(tulos);
+						break;
+					}
+					//System.out.print("oot");
+					//Aloitusnakyma aloitusnakyma = new Aloitusnakyma(kayttaja.getText());
 				}catch (RemoteException e2){
 					e2.printStackTrace();
 				}

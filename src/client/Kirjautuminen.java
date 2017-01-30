@@ -73,7 +73,7 @@ public class Kirjautuminen extends JPanel{
 						salasana.setText("");
 						break;
 					case 1:
-							System.out.println("Löydettiin");
+							Data.uuid = tulos.substring(1);
 							Data.nimi = kayttaja.getText();
 							Data.vaihdaNakyma(Data.PERUSNAKYMA); //Pitää vaihtaa päänäkymään myöhemmin kun saadaan kaikki toimimaan
 						break;			

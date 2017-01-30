@@ -25,17 +25,9 @@ public class Kirjautuminen extends JPanel{
 	private JPanel sailio;
 	private JPanel kirjautuminen;
 	private Rekisteroituminen rekisteroituminen;
-//	private HallintaClient hc;
 
 
 	public Kirjautuminen(){
-		/*
-		try {
-			HallintaClient hc = new HallintaClient();
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
 		// painikkeet
 		kirjaudu = new JButton("Kirjaudu sisään");
 		rekisteri = new JButton("Etkö ole rekisteröitynyt?");
@@ -53,7 +45,7 @@ public class Kirjautuminen extends JPanel{
 
 		//layout null, sammutus rastista, näkyvyys, koko jne
 		setSize(640, 480);
-		kirjautuminen.setLayout(null);
+		setLayout(null);
 		setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
 		// Sisäänkirjautumisen actionlistener
@@ -89,12 +81,12 @@ public class Kirjautuminen extends JPanel{
 		salasanakentta.setBounds(10,30,120,20);
 
 		add(sailio);
-		kirjautuminen.add(kirjaudu);
-		kirjautuminen.add(rekisteri);
-		kirjautuminen.add(kayttaja);
-		kirjautuminen.add(salasana);
-		kirjautuminen.add(kayttajakentta);
-		kirjautuminen.add(salasanakentta);
+		add(kirjaudu);
+		add(rekisteri);
+		add(kayttaja);
+		add(salasana);
+		add(kayttajakentta);
+		add(salasanakentta);
 		sailio.add(kirjautuminen, "kirj");
 		sailio.add(rekisteroituminen, "reks");
 

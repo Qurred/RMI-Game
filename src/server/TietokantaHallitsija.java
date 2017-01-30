@@ -109,6 +109,7 @@ public class TietokantaHallitsija {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println(hahmot.size());
 		return hahmot;
 	}
 

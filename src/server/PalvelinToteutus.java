@@ -211,23 +211,24 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 				ArrayList<Hahmo> _hahmot = new ArrayList<>();
 				for(int i = 0; i < hahmotiedot.length; i++){
 					_hahmot.add(hahmot.get(hahmotiedot[i]).kopioi());
-				}
+				}			
 				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), _hahmot);
 				if(pelit.size() > 0){
 					for (int i = 0; i < pelit.size(); i++) {
 						if(!pelit.get(i).onMolemmat()){
+							System.out.println("Liitytään peliin");
 							pelit.get(i).liityPeliin(joukkue);
 							break;
 						}
 						if(i == pelit.size()-1){
 							pelit.add(new Peli(joukkue, tkh.annaYhteys()));
-							pelit.get(pelit.size()).run();
+							pelit.get(pelit.size()-1).start();
 							break;
 						}
 					}
 				}else{
 					pelit.add(new Peli(joukkue, tkh.annaYhteys()));
-					pelit.get(pelit.size()).run();	
+					pelit.get(pelit.size()-1).start();	
 				}
 			}
 		}

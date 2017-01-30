@@ -109,6 +109,9 @@ public class Hahmo {
 		return id;
 	}
 
+	public Hahmo kopioi(){
+		return new Hahmo(id, nimi, tyyppi, elama, puolustusLahi, puolustusMatka, nopeus, hyokkaus);
+	}
 
 	@Override
 	public String toString() {

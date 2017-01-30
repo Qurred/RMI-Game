@@ -205,32 +205,32 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	@Override
 	public void etsiPelia(String identitykey, int[] hahmotiedot) throws RemoteException {
-		System.out.println("Uusi pelaaja etsii peliä, tirsk");
 		for (Kayttaja kayttaja : kayttajat) {
-			System.out.println("KEINUTAAAN");
-			System.out.println(kayttaja.annaUUID() + " " +identitykey);
 			if(kayttaja.annaUUID().equals(identitykey) && kayttaja.annaTila() != Kayttaja.PELISSA){
-				System.out.println("ehto täyttyi");
 				kayttaja.vaihdaTila(Kayttaja.PELISSA);
-				ArrayList<Hahmo> hahmot = new ArrayList<>();
-				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), hahmot);
+				ArrayList<Hahmo> _hahmot = new ArrayList<>();
+				for(int i = 0; i < hahmotiedot.length; i++){
+					_hahmot.add(hahmot.get(hahmotiedot[i]).kopioi());
+				}
+				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), _hahmot);
 				if(pelit.size() > 0){
 					for (int i = 0; i < pelit.size(); i++) {
 						if(!pelit.get(i).onMolemmat()){
-							System.out.println("Löydettiin peli ja liitytään");
 							pelit.get(i).liityPeliin(joukkue);
 							break;
 						}
 						if(i == pelit.size()-1){
-							System.out.println("Luodaan uusi peli");
 							pelit.add(new Peli(joukkue, tkh.annaYhteys()));
-							pelit.get(pelit.size()).run();			
+							pelit.get(pelit.size()).run();
+							break;
 						}
 					}
+				}else{
+					pelit.add(new Peli(joukkue, tkh.annaYhteys()));
+					pelit.get(pelit.size()).run();	
 				}
 			}
 		}
-		System.out.println("Käytiin looppipooppi läpi");
 	}
 
 	public void alustaHahmot(){

@@ -25,12 +25,14 @@ public class Peli implements Runnable {
 	}
 	
 	public Peli(Joukkue sininen, Connection yhteys){
+		System.out.println("Luodaan uusi Peli");
 		this.sininenTiimi = sininen;
 		this.yhteys = yhteys;
 	}
 
 	public boolean onMolemmat(){
 		if(punainenTiimi != null){
+			System.out.println("Molemmat pelaajat ovat olemassa");
 			return true;
 		}
 		return false;
@@ -41,9 +43,11 @@ public class Peli implements Runnable {
 	}
 	
 	public void run() {
+		System.out.println("Runnataan peli");
 		while(punainenTiimi == null){
 			
 		}	
+		System.out.println("Aloitetaan peli");
 		tunniste = UUID.randomUUID().toString();
 		tapahtumat.add("Pelaajien " + sininenTiimi.annaNimi() + " & " + punainenTiimi.annaNimi() + " joukot kohtasivat");
 		alkuTarkastus();
@@ -96,6 +100,7 @@ public class Peli implements Runnable {
 		try{
 			PrintWriter kirjoitin = new PrintWriter(this.getClass().getClassLoader().getResource("").getPath()+"\\taistelut\\" + tunniste + ".txt","UTF-8" );
 			for (String tapahtuma : tapahtumat) {
+				System.out.println(tapahtuma);
 				kirjoitin.println(tapahtuma);
 			}
 			kirjoitin.close();

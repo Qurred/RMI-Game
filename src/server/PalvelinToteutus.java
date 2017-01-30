@@ -205,6 +205,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	@Override
 	public void etsiPelia(String identitykey, int[] hahmotiedot) throws RemoteException {
+		System.out.println("Uusi pelaaja etsii peliä, tirsk");
 		for (Kayttaja kayttaja : kayttajat) {
 			if(kayttaja.annaUUID().equals(identitykey) && kayttaja.annaTila() != Kayttaja.PELISSA){
 				kayttaja.vaihdaTila(Kayttaja.PELISSA);
@@ -213,10 +214,12 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 				if(pelit.size() > 0){
 					for (int i = 0; i < pelit.size(); i++) {
 						if(!pelit.get(i).onMolemmat()){
+							System.out.println("Löydettiin peli ja liitytään");
 							pelit.get(i).liityPeliin(joukkue);
 							break;
 						}
 						if(i == pelit.size()-1){
+							System.out.println("Luodaan uusi peli");
 							pelit.add(new Peli(joukkue, tkh.annaYhteys()));
 							pelit.get(pelit.size()).run();			
 						}

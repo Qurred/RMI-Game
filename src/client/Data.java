@@ -8,10 +8,12 @@ import javax.swing.JPanel;
 import hahmonakymakokeilu.HahmoNakyma;
 import nakymat.Hahmojenvalinta;
 import nakymat.OsoiteNakyma;
+import nakymat.YleisNakyma;
 import server.PalvelinRajapinta;
 
 public class Data {
 
+	//
 	public static final int IP = 0;
 	public static final int KIRJAUTUMINEN = 1;
 	public static final int HAHMONAKYMA = 2;
@@ -37,7 +39,8 @@ public class Data {
 		nakymat.add(new OsoiteNakyma(dim));
 		nakymat.add(new Kirjautuminen());
 		nakymat.add(new HahmoNakyma(dim));
-		nakymat.add(new Hahmojenvalinta(dim)); //Lis‰t‰‰n varmaankin yleiseen JPaneeliin
+		nakymat.add(new YleisNakyma(dim));
+//		nakymat.add(new Hahmojenvalinta(dim));//Lis‰t‰‰n varmaankin yleiseen JPaneeliin
 		for (JPanel nakyma : nakymat) {
 			nakyma.setVisible(false);
 		}

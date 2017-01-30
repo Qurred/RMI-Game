@@ -47,7 +47,7 @@ public class TietokantaHallitsija {
 	}
 
 	public synchronized int rekisteroi(String nimi, String salasana){
-		int tulos = 0;
+		int tulos = 1;
 		try {
 			if(yhteys != null && !yhteys.isClosed()){
 				prstmt = yhteys.prepareStatement("SELECT COUNT(*) FROM KAYTTAJA WHERE NIMIMERKKI = ? ;");
@@ -60,13 +60,12 @@ public class TietokantaHallitsija {
 					prstmt.setString(1, nimi);
 					prstmt.setString(2, salasana);
 					prstmt.setString(3, "0");
-					System.out.println("suoretataan komento...");
 					prstmt.executeUpdate();
 					yhteys.commit();
 					prstmt.close();
 				}else{
 					prstmt.close();
-					tulos = 1;
+					tulos = 0;
 				}
 			}else{
 				System.out.println("Onko yhteys suljettu? ");

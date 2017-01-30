@@ -67,7 +67,7 @@ public class Kirjautuminen extends JPanel{
 					case 1:
 							System.out.println("Löydettiin");
 							Data.nimi = kayttaja.getText();
-							Data.vaihdaNakyma(Data.HAHMONAKYMA); //Pitää vaihtaa päänäkymään myöhemmin kun saadaan kaikki toimimaan
+							Data.vaihdaNakyma(Data.PERUSNAKYMA); //Pitää vaihtaa päänäkymään myöhemmin kun saadaan kaikki toimimaan
 						break;			
 					default:
 						System.out.println(tulos);

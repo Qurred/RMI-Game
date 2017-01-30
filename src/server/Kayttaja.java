@@ -7,7 +7,7 @@ import client.AsiakasRajapinta;
 public class Kayttaja{
 
 	public static final int IDLE = 0;
-	public static final int ETSIMASSA = 1;
+	public static final int POISSA = 1;
 	public static final int PELISSA = 2;
 
 	private int id;

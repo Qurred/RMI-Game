@@ -9,9 +9,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import nakymat.YleisNakyma;
+
 public class Main extends UnicastRemoteObject implements AsiakasRajapinta {
 	private JFrame ikkuna;
 	private Dimension dim = new Dimension(800,450);
+	private YleisNakyma yleis;
 
 	public static void main(String[] args) throws RemoteException{
 		Main main = new Main();
@@ -20,6 +23,7 @@ public class Main extends UnicastRemoteObject implements AsiakasRajapinta {
 	public Main() throws RemoteException{
 		Data.Alusta();
 		Data.lisaaNakymat(dim);
+		yleis = (YleisNakyma) Data.nakymat.get(Data.PERUSNAKYMA);
 		ikkuna = new JFrame("RMI-Game"); 
 		ikkuna.setSize(dim);
 		ikkuna.setLayout(null);
@@ -37,12 +41,11 @@ public class Main extends UnicastRemoteObject implements AsiakasRajapinta {
 		tausta.setVisible(true);
 		ikkuna.add(tausta);
 		Data.arp = this;
-
 	}
 
 	@Override
 	public void vastaanotaViesti(String msg) throws RemoteException {
-		// TODO Auto-generated method stub
+		yleis.vastaanotaViesti(msg);
 		
 	}
 

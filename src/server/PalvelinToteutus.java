@@ -67,15 +67,21 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 		}else{
 			try {
 				if(tulokset.isBeforeFirst()){ // Tarkistetaan onko resultsetiss‰ osumia
-					if(tulokset.getString(4).equals(true)){ // K‰ytt‰j‰ on estetty
+					if(tulokset.getString(4).equals("1")){ // K‰ytt‰j‰ on estetty
 						tulos += 2 +tulokset.getString(5); //Lis‰t‰‰n tulokseen luku 2 ja est‰misen syy
 					}else{
-						for (Kayttaja kayttaja : kayttajat) {
-							if(kayttaja.annaID() == Integer.parseInt(tulokset.getString(1))){
-								tulos += 2 + "K‰ytt‰j‰ on jo kirjautunut sis‰‰n, yrit‰ hetken p‰‰st‰ myˆhemmin";
-								tulokset.getStatement().close();
-								tulokset.close();
-								return tulos;
+						for (int i = 0; i < kayttajat.size(); i++) {
+							if(kayttajat.get(i).annaID() == Integer.parseInt(tulokset.getString(1))){
+								if(kayttajat.get(i).annaTila() == Kayttaja.POISSA){
+									kayttajat.remove(i);
+									break;
+								}else{
+									tulos += 2 + "K‰ytt‰j‰ on jo kirjautunut sis‰‰n, yrit‰ hetken p‰‰st‰ myˆhemmin";
+									kayttajat.get(i).vaihdaTila(Kayttaja.POISSA);
+									tulokset.getStatement().close();
+									tulokset.close();
+									return tulos;
+								}
 							}
 						}
 						String uuid = UUID.randomUUID().toString();
@@ -98,23 +104,13 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 
 	public synchronized String rekisteroidu(String nimi, String salasana) throws RemoteException {
 		tkh.rekisteroi(nimi.toLowerCase(), salasana);
-		loggerPalvelin.log(Level.INFO, "Uusi kirjautuminen rekisterˆityminen: " + nimi+":"+salasana);
+		loggerPalvelin.log(Level.INFO, "Uusi rekisterˆityminen: " + nimi+":"+salasana);
 		return "1";
 	}
 
 	public void lahetaViesti(String msg, String nimimerkki) throws RemoteException {
 		kh.lisaaJonoon(nimimerkki + ": " + msg);
 		System.out.println(nimimerkki + ": " + msg);
-		//		if(kayttajat.size()!=0){
-		//			loggerChatti.log(Level.INFO, nimimerkki +": " + msg);
-		//			for (int i = 0; i < kayttajat.size(); i++) {
-		//				if(!kayttajat.get(1).annaPoissa()){
-		//					kayttajat.get(i).vastaanotaViesti( nimimerkki +": " + msg);
-		//				}else{
-		//					kirjauduUlos(kayttajat.get(i).annaUUID());
-		//				}
-		//			}
-		//		}
 	}
 
 	private void otaKomento(String s) throws RemoteException{
@@ -210,8 +206,8 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 	@Override
 	public void etsiPelia(String identitykey, int[] hahmotiedot) throws RemoteException {
 		for (Kayttaja kayttaja : kayttajat) {
-			if(kayttaja.annaUUID().equals(identitykey) && kayttaja.annaTila() != Kayttaja.ETSIMASSA){
-				kayttaja.vaihdaTila(Kayttaja.ETSIMASSA);
+			if(kayttaja.annaUUID().equals(identitykey) && kayttaja.annaTila() != Kayttaja.PELISSA){
+				kayttaja.vaihdaTila(Kayttaja.PELISSA);
 				ArrayList<Hahmo> hahmot = new ArrayList<>();
 				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), hahmot);
 				if(pelit.size() > 0){

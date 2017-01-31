@@ -14,12 +14,14 @@ public class Joukkue extends UnicastRemoteObject{
 	private ArrayList<Hahmo> hahmot;
 	private int asetelma;
 	private int yhteisElama;
+	private Kayttaja kayttaja;
 	
-	public Joukkue(AsiakasRajapinta arp, String nimi, int pelaajanID, ArrayList<Hahmo> hahmot) throws RemoteException{
+	public Joukkue(AsiakasRajapinta arp, String nimi, int pelaajanID, ArrayList<Hahmo> hahmot, Kayttaja kayttaja) throws RemoteException{
 		this.hahmot = (ArrayList<Hahmo>) hahmot.clone();
 		this.arp = arp;
 		this.nimi = nimi;
 		this.asetaPelaajanID(pelaajanID);
+		this.kayttaja = kayttaja;
 	}
 	
 	
@@ -47,10 +49,13 @@ public class Joukkue extends UnicastRemoteObject{
 		return asetelma;
 	}
 
-	public void annaTiedot(ArrayList<String> tapahtumat){
-		for (String tapahtuma : tapahtumat) {
-			//arp.tulostaTiedot(tapahtuma);
-		}	
+	public void annaTiedot(String[] tapahtumat){
+			try {
+				arp.vastaanotaTulokset(tapahtumat);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public int annaPelaajanID() {
@@ -73,4 +78,8 @@ public class Joukkue extends UnicastRemoteObject{
 		return nykyinen / maksimi * 100;
 	}
 
+	
+	public void asetaTila(int tila){
+		this.kayttaja.vaihdaTila(tila);
+	}
 }

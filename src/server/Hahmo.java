@@ -22,6 +22,7 @@ public class Hahmo {
 		this.puolustusMatka = pm;
 		this.nopeus = nopeus;
 		this.hyokkaus = hyokkaus;
+		this.moraali = 100;
 	}
 	
 	

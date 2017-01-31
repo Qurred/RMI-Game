@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.UUID;
 
 public class Peli extends Thread {
@@ -14,6 +16,7 @@ public class Peli extends Thread {
 	private String tunniste;
 	private boolean sininenVoitti = false;
 	private Connection yhteys;
+	private Random random;
 
 
 	private ArrayList<String> tapahtumat;
@@ -43,6 +46,7 @@ public class Peli extends Thread {
 
 	public void run() {
 		tapahtumat = new ArrayList<>();
+		this.random = new Random();
 		while(this.punainenTiimi == null){
 			try {
 				Thread.sleep(1000);
@@ -63,11 +67,12 @@ public class Peli extends Thread {
 		vaiheKaksi();
 		tarkistaVoittaja();
 		tallennaTapahtumat();
-//		tulosTietokantaan();
+		//		tulosTietokantaan();
 		System.out.println("TAISTELU OHI");
 		for (String tapahtuma : tapahtumat) {
 			System.out.println(tapahtuma);
 		}
+		vapautaPelaajat();
 	}
 
 	public void alkuTarkastus(){
@@ -85,13 +90,109 @@ public class Peli extends Thread {
 	}
 
 	public void vaiheYksi(){
-		//T‰‰ll‰ pit‰isi olla ankaraa laskentaa :)
-		System.out.println("VAIHE YKSI");
+		ArrayList<Hahmo> sininenMatka = new ArrayList<>();
+		ArrayList<Hahmo> punainenMatka = new ArrayList<>();
+		for(int i = 0; i < sininenTiimi.annaHahmot().size(); i++){
+			if(sininenTiimi.annaHahmot().get(i).annaTyyppi() == 1){
+				sininenMatka.add(sininenTiimi.annaHahmot().get(i));
+			}
+			if(punainenTiimi.annaHahmot().get(i).annaTyyppi() == 1){
+				punainenMatka.add(punainenTiimi.annaHahmot().get(i));
+			}
+		}
+
+		int s = 0,p = 0;
+		while(s < sininenMatka.size() || p < punainenMatka.size()){
+			if(s < sininenMatka.size()){
+				Hahmo hyokkaava = sininenMatka.get(s);
+				while(hyokkaava.annaElama() < 1){
+					hyokkaava = sininenMatka.get(random.nextInt(sininenMatka.size()));
+				}
+				Hahmo puolustava = punainenTiimi.annaHahmot().get(random.nextInt(punainenTiimi.annaHahmot().size()));
+				while(puolustava.annaElama() < 1){
+					puolustava = punainenTiimi.annaHahmot().get(random.nextInt(punainenTiimi.annaHahmot().size()));
+				}
+				int vahinko = hyokkaava.annaHyokkaus()- puolustava.annaPuolustusMatka();
+				if(vahinko < 0) vahinko = 0;
+				puolustava.asetaElama(puolustava.annaElama() - vahinko);
+				tapahtumat.add(punainenTiimi.annaNimi()+ ": "+puolustava.annaNimi() + " otti " + hyokkaava.annaNimi() + " hyˆkk‰yksest‰ vahinkoa " + vahinko + " ja h‰nelle on nyt " + puolustava.annaElama()+"/" + puolustava.annaMaksimiElama());
+				if(puolustava.annaElama()<=0){
+					tapahtumat.add(punainenTiimi.annaNimi()+ ": "+puolustava.annaNimi()+ " kuoli");
+				}
+				s++;
+			}
+			if(p < punainenMatka.size()){
+				Hahmo hyokkaava = punainenMatka.get(p);
+				while(hyokkaava.annaElama() < 1){
+					hyokkaava = punainenMatka.get(random.nextInt(punainenMatka.size()));
+				}
+				Hahmo puolustava = sininenTiimi.annaHahmot().get(random.nextInt(sininenTiimi.annaHahmot().size()));
+				while(puolustava.annaElama() < 1){
+					puolustava = sininenTiimi.annaHahmot().get(random.nextInt(sininenTiimi.annaHahmot().size()));
+				}
+				int vahinko =hyokkaava.annaHyokkaus() - puolustava.annaPuolustusMatka();
+				if(vahinko < 0) vahinko = 0;
+				puolustava.asetaElama(puolustava.annaElama() - vahinko);
+				tapahtumat.add(sininenTiimi.annaNimi()+ ": "+puolustava.annaNimi() + " otti " + hyokkaava.annaNimi() + " hyˆkk‰yksest‰ vahinkoa " + vahinko + " ja h‰nelle on nyt " + puolustava.annaElama()+"/" + puolustava.annaMaksimiElama());
+				if(puolustava.annaElama()<=0){
+					tapahtumat.add(sininenTiimi.annaNimi()+ ": "+puolustava.annaNimi()+ " kuoli");
+				}
+				p++;
+			}
+		}
 	}
 
 	public void vaiheKaksi(){
-		//T‰‰ll‰ pit‰isi olla ankaraa laskentaa :)
-		System.out.println("VAIHE KAKSI");
+		ArrayList<Hahmo> sininenLahi = new ArrayList<>();
+		ArrayList<Hahmo> punainenLahi = new ArrayList<>();
+		for(int i = 0; i < sininenTiimi.annaHahmot().size(); i++){
+			if(sininenTiimi.annaHahmot().get(i).annaTyyppi() == 0){
+				sininenLahi.add(sininenTiimi.annaHahmot().get(i));
+			}
+			if(punainenTiimi.annaHahmot().get(i).annaTyyppi() == 0){
+				punainenLahi.add(punainenTiimi.annaHahmot().get(i));
+			}
+		}
+		
+		int s = 0,p = 0;
+		while(s < sininenLahi.size() || p < punainenLahi.size()){
+			if(s < sininenLahi.size()){
+				Hahmo hyokkaava = sininenLahi.get(s);
+				while(hyokkaava.annaElama() < 1){
+					hyokkaava = sininenLahi.get(random.nextInt(sininenLahi.size()));
+				}
+				Hahmo puolustava = punainenTiimi.annaHahmot().get(random.nextInt(punainenTiimi.annaHahmot().size()));
+				while(puolustava.annaElama() < 1){
+					puolustava = punainenTiimi.annaHahmot().get(random.nextInt(punainenTiimi.annaHahmot().size()));
+				}
+				int vahinko = hyokkaava.annaHyokkaus()  - puolustava.annaPuolustusMatka();
+				if(vahinko < 0) vahinko = 0;
+				puolustava.asetaElama(puolustava.annaElama() - vahinko);
+				tapahtumat.add(punainenTiimi.annaNimi()+ ": "+puolustava.annaNimi() + " otti " + hyokkaava.annaNimi() + " hyˆkk‰yksest‰ vahinkoa " + vahinko + " ja h‰nelle on nyt " + puolustava.annaElama()+"/" + puolustava.annaMaksimiElama());
+				if(puolustava.annaElama()<=0){
+					tapahtumat.add(punainenTiimi.annaNimi()+ ": "+puolustava.annaNimi()+ " kuoli");
+				}
+				s++;
+			}
+			if(p < punainenLahi.size()){
+				Hahmo hyokkaava = punainenLahi.get(p);
+				while(hyokkaava.annaElama() < 1){
+					hyokkaava = punainenLahi.get(random.nextInt(punainenLahi.size()));
+				}
+				Hahmo puolustava = sininenTiimi.annaHahmot().get(random.nextInt(sininenTiimi.annaHahmot().size()));
+				while(puolustava.annaElama() < 1){
+					puolustava = sininenTiimi.annaHahmot().get(random.nextInt(sininenTiimi.annaHahmot().size()));
+				}
+				int vahinko = hyokkaava.annaHyokkaus() - puolustava.annaPuolustusMatka();
+				if(vahinko < 0) vahinko = 0;
+				puolustava.asetaElama(puolustava.annaElama() - vahinko);
+				tapahtumat.add(sininenTiimi.annaNimi()+ ": "+puolustava.annaNimi() + " otti " + hyokkaava.annaNimi() + " hyˆkk‰yksest‰ vahinkoa " + vahinko + " ja h‰nelle on nyt " + puolustava.annaElama()+"/" + puolustava.annaMaksimiElama());
+				if(puolustava.annaElama()<=0){
+					tapahtumat.add(sininenTiimi.annaNimi()+ ": "+puolustava.annaNimi()+ " kuoli");
+				}
+				p++;
+			}
+		}
 
 	}
 
@@ -106,6 +207,16 @@ public class Peli extends Thread {
 			sininenVoitti = false;
 			tapahtumat.add("Pelaajan " +this.punainenTiimi.annaNimi() + "joukkue voitti taistelun pelaajaan "
 					+ this.sininenTiimi.annaNimi() + " joukkueen");
+		}
+		tapahtumat.add("-----------------------");
+		tapahtumat.add(sininenTiimi.annaNimi());
+		for (Hahmo hahmo : sininenTiimi.annaHahmot()) {
+			tapahtumat.add(hahmo.annaNimi()+ ": " + hahmo.annaElama()+"/"+hahmo.annaMaksimiElama());
+		}
+		tapahtumat.add("-----------------------");
+		tapahtumat.add(punainenTiimi.annaNimi());
+		for (Hahmo hahmo : punainenTiimi.annaHahmot()) {
+			tapahtumat.add(hahmo.annaNimi()+ ": " + hahmo.annaElama()+"/"+hahmo.annaMaksimiElama());
 		}
 	}
 
@@ -135,7 +246,11 @@ public class Peli extends Thread {
 	}
 
 	public void vapautaPelaajat(){
-		//Vapautetaan pelaajat, eli asetetaan tilaksi vapaa
+		String[] tapahtumaTaulu = new String[tapahtumat.size()];
+		tapahtumaTaulu =tapahtumat.toArray(tapahtumaTaulu);
+		sininenTiimi.annaTiedot(tapahtumaTaulu);
+		punainenTiimi.annaTiedot(tapahtumaTaulu);
+		sininenTiimi.asetaTila(Kayttaja.IDLE);
+		punainenTiimi.asetaTila(Kayttaja.IDLE);
 	}
-
 }

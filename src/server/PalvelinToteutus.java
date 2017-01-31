@@ -212,7 +212,7 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 				for(int i = 0; i < hahmotiedot.length; i++){
 					_hahmot.add(hahmot.get(hahmotiedot[i]).kopioi());
 				}			
-				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), _hahmot);
+				Joukkue joukkue = new Joukkue(kayttaja.annaRajapinta(), kayttaja.annaNimimerkki(), kayttaja.annaID(), _hahmot, kayttaja);
 				if(pelit.size() > 0){
 					for (int i = 0; i < pelit.size(); i++) {
 						if(!pelit.get(i).onMolemmat()){
@@ -221,12 +221,14 @@ public class PalvelinToteutus extends UnicastRemoteObject implements PalvelinRaj
 							break;
 						}
 						if(i == pelit.size()-1){
+							lahetaViesti("Pelaaja " + kayttaja.annaNimimerkki() + " etsii peliä", "[Palvelin]");
 							pelit.add(new Peli(joukkue, tkh.annaYhteys()));
 							pelit.get(pelit.size()-1).start();
 							break;
 						}
 					}
 				}else{
+					lahetaViesti("Pelaaja " + kayttaja.annaNimimerkki() + " etsii peliä", "[Palvelin]");
 					pelit.add(new Peli(joukkue, tkh.annaYhteys()));
 					pelit.get(pelit.size()-1).start();	
 				}

@@ -56,6 +56,7 @@ public class Main extends UnicastRemoteObject implements AsiakasRajapinta {
 
 	@Override
 	public void vastaanotaTulokset(String[] tulokset) throws RemoteException {
+		yleis.vastaanotaTiedot(tulokset);
 		for(int i = 0; i < tulokset.length; i++){
 			System.out.println(tulokset[i]);
 		}

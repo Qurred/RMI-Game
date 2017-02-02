@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -26,10 +27,12 @@ import hahmonakymakokeilu.OmaScrollBar;
 public class YleisNakyma extends JPanel {
 
 	//Chatti
+	private JLabel keskusteluTausta;
 	private JScrollPane chattiPaneeli;
 	private JTextField viesti;
 	private JButton lahetaViesti;
 	private JTextArea chatti;
+	private ImageIcon chattiTausta;
 	//Fontit
 	private Font chattiFontti, viestiFontti, yleisFontti;
 	//Hahmovalinta
@@ -47,32 +50,41 @@ public class YleisNakyma extends JPanel {
 
 	private void alusta(){
 		//Fonttien alustus
-		Font chattiFontti = new Font("Verdana", Font.HANGING_BASELINE, 15);
+		Font chattiFontti = new Font("Verdana", Font.HANGING_BASELINE, 13);
 		Font viestiFontti = new Font("Verdana", Font.PLAIN, 12);
-		Font yleisFontti = new Font("Verdana", Font.ROMAN_BASELINE, 20);
+		Font yleisFontti = new Font("Verdana", Font.ROMAN_BASELINE, 16);
 
 		//Chatin alustus
+
 		chatti = new JTextArea();
 		chatti.setVisible(true);
-		chatti.setBounds(505,15,270,350);
-		chatti.setBackground(Color.gray);
+		chatti.setBounds(524,17,261,345);
+		chatti.setBackground(null);
+		chatti.setOpaque(false);
 		chatti.setEditable(false);
 		chatti.setWrapStyleWord(true);
 		chatti.setLineWrap(true);
 		chatti.setFont(chattiFontti);
+		chatti.setForeground(Color.black);
 		chattiPaneeli = new JScrollPane(chatti, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		chattiPaneeli.setBounds(505,15,280,350);
+		chattiPaneeli.setBounds(524,17,261,345);
 		chattiPaneeli.getVerticalScrollBar().setUI(new OmaScrollBar());
 		chattiPaneeli.setOpaque(false);
 		chattiPaneeli.getViewport().setOpaque(false);
 		chattiPaneeli.getViewport().setBackground(null);
 		chattiPaneeli.setVisible(true);
 		chattiPaneeli.setBorder(null);
-
+		keskusteluTausta = new JLabel();
+		chattiTausta = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/chattitausta.png")));
+		keskusteluTausta.setIcon(chattiTausta);
+		keskusteluTausta.setBounds(505,-2,280, 430);
+		keskusteluTausta.setVisible(true);
+		
 		//Viestiosion alustus
 		viesti = new JTextField();
 		viesti.setVisible(true);
-		viesti.setBounds(505,365,200,25);
+		viesti.setBounds(520,373,250,16);
+		viesti.setBackground(null);
 		viesti.setFont(viestiFontti);
 		viesti.addActionListener(new ActionListener(){
 			@Override
@@ -81,7 +93,7 @@ public class YleisNakyma extends JPanel {
 
 		//JButton
 		lahetaViesti = new JButton("Laheta viesti");
-		lahetaViesti.setBounds(710, 365, 75, 25);
+		lahetaViesti.setBounds(520,402, 250,16);
 		lahetaViesti.setFont(yleisFontti);
 		lahetaViesti.setVisible(true);
 		lahetaViesti.addActionListener(new ActionListener() {
@@ -96,6 +108,7 @@ public class YleisNakyma extends JPanel {
 		this.add(chattiPaneeli);
 		this.add(viesti);
 		this.add(lahetaViesti);
+		this.add(keskusteluTausta);
 	}
 
 	public void vastaanotaViesti(String viesti){
@@ -120,12 +133,14 @@ public class YleisNakyma extends JPanel {
 	}
 
 	class HahmoValinta extends JPanel{
-		private ImageIcon tausta, taustaValittu, taustaHover;
+		private ImageIcon tausta, taustaValittu, taustaHover, chattiTausta;
 		private ArrayList<HahmoLabel> hahmot;
-		private JButton taistele;
+		private JButton taistele, tiedot;
 		private JPanel hahmoPaneeli;
 		private int[] valitut = {-1,-1,-1,-1};
+		private JScrollPane tapahtumaPaneeli;
 		public JTextArea tapahtumat;
+		
 		
 		public HahmoValinta(){
 			super();
@@ -136,9 +151,9 @@ public class YleisNakyma extends JPanel {
 			alusta();
 		}
 		private void alusta(){
-			ImageIcon tausta = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappi.png")));
-			ImageIcon taustaValittu = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiValittu.png")));
-			ImageIcon taustaHover = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiHover.png")));
+			tausta = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappi.png")));
+			taustaValittu = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiValittu.png")));
+			taustaHover = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/hahmoNappiHover.png")));
 			hahmoPaneeli = new JPanel();
 			for(int i = 0; i < Data.tiedot.size(); i++){
 				HahmoLabel tmp = new HahmoLabel(tausta, taustaValittu, taustaHover, Data.tiedot.get(i).annaNimi(), i); 
@@ -188,12 +203,13 @@ public class YleisNakyma extends JPanel {
 			taistele = new JButton("TAISTELUUN!");
 			taistele.setEnabled(false);
 			taistele.setVisible(true);
-			taistele.setBounds(40,200,200,40);
+			taistele.setBounds(20,200,200,40);
 			taistele.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
 						System.out.println("TAISTELUUN");
+						tapahtumat.setText("");
 						Data.prp.etsiPelia(Data.uuid, valitut);
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
@@ -202,13 +218,31 @@ public class YleisNakyma extends JPanel {
 			});
 			tapahtumat = new JTextArea();
 			tapahtumat.setVisible(true);
-			tapahtumat.setBounds(5, 250,350, 180);
+			tapahtumat.setBounds(5, 250,400, 160);
 			tapahtumat.setEditable(false);
 			tapahtumat.setWrapStyleWord(true);
 			tapahtumat.setLineWrap(true);
 			tapahtumat.setFont(chattiFontti);
-			add(tapahtumat);
+			tapahtumaPaneeli = new JScrollPane(tapahtumat, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			tapahtumaPaneeli.setBounds(5, 250,400, 160);
+			tapahtumaPaneeli.getVerticalScrollBar().setUI(new OmaScrollBar());
+			tapahtumaPaneeli.setOpaque(false);
+			tapahtumaPaneeli.getViewport().setOpaque(false);
+			tapahtumaPaneeli.getViewport().setBackground(null);
+			tapahtumaPaneeli.setVisible(true);
+			tapahtumaPaneeli.setBorder(null);
+			tiedot = new JButton("Hahmojen tiedot");
+			tiedot.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+						Data.vaihdaNakyma(Data.HAHMONAKYMA);
+				}
+			});
+			tiedot.setVisible(true);
+			tiedot.setBounds(225,200,200,40);
+			add(tapahtumaPaneeli);
 			add(hahmoPaneeli);
+			add(tiedot);
 			add(taistele);
 		}
 	}

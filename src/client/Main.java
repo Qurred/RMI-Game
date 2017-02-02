@@ -60,6 +60,7 @@ public class Main extends UnicastRemoteObject implements AsiakasRajapinta {
 		for(int i = 0; i < tulokset.length; i++){
 			System.out.println(tulokset[i]);
 		}
+		
 	}
 }
 
